@@ -57,12 +57,11 @@
                 </el-form-item>
                 <el-form-item label="注册城市">
                     <el-select v-model="form.province_id" placeholder="请选择学校区域">
-                        <el-option v-for="(item,index) in provinceList" :label="item.name" :value="item.id"
-                                   @click="queryCityList(item.id)"></el-option>
+                        <el-option v-for="(item,index) in provinceList" :label="item.name" :value="item.id"></el-option>
                     </el-select>
+                    <el-button @click="queryCityList(form.province_id)">确定</el-button>
                     <el-select v-if="cityList.length>0" v-model="form.city_id" placeholder="请选择学校城市">
-                        <el-option v-for="(item,index) in cityList" :label="item.name" :value="item.id"
-                                   @click="confirmCity(item.id)"></el-option>
+                        <el-option v-for="(item,index) in cityList" :label="item.name" :value="item.id"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item>
@@ -77,7 +76,8 @@
 
 <script>
     import headTop from '../components/headTop'
-    import {getSchoolList, deleteSchool, getCityList, getProvinceList} from '@/api/getData'
+    import {getSchoolList, deleteSchool, getCityList, getProvinceList, postSchool} from '@/api/getData'
+    // import {commonDelItem} from '../../common/util'
 
     export default {
         name: "schoolManage",
@@ -91,11 +91,13 @@
                 showAddForm: false,
                 form: {
                     school_name: '',
-                    province_id:'',
-                    city_id:''
+                    province_id: '',
+                    city_id: ''
                 },
                 provinceList: [],
-                cityList: []
+                cityList: [],
+                count: 0,
+                currentPage: 0
             }
         },
         created() {
@@ -112,14 +114,43 @@
             },
             async queryCityList(province_id) {
                 console.log('queryCityList');
-                await getCityList(province_id).then(res => {
+                let postData = {province_id};
+                await getCityList(postData).then(res => {
                     this.cityList = res.data;
                 })
             },
-            confirmCity(){},
-            onSubmit(e) {
-                console.log('submit!', e);
-                console.log('submit!', this.form);
+            async onSubmit() {
+                const page = this;
+                let isFull = true;
+                let form = this.form;
+                for (let i in form) {
+                    if (form[i] == null || form[i] == '') {
+                        isFull = false;
+                    }
+                }
+                if (!isFull) {
+                    page.$alert('请填写所有选项', '提示', {
+                        confirmButtonText: '确定',
+                    });
+                    return;
+                }
+                // todo ajax 增加学校
+                console.log('add school');
+                await postSchool(this.form).then(res => {
+                    if (res.code = 1) {
+                        this.showAddForm = false;
+                        this.$notify({
+                            title: '增加成功',
+                            type: 'success'
+                        });
+                        this.returnSchoolList();
+                    }else{
+                        this.$notify.error({
+                            title: '增加失败 ',
+                        });
+                    }
+                })
+
             },
             async deleteSchool() {
                 let deleteSchoolArr = [];
@@ -127,10 +158,23 @@
                     deleteSchoolArr.push(item.school_id);
                 })
                 console.log('deleteSchool:', deleteSchoolArr);
-                const PostData = await deleteSchool(deleteSchoolArr);
-                console.log(PostData);
+                await deleteSchool(deleteSchoolArr).then(res=>{
+                    if (res.code == 1) {
+                        this.$notify({
+                            title: '删除成功',
+                            type: 'success'
+                        });
+                        this.returnSchoolList();
+                    } else {
+                        this.$notify.error({
+                            title: '删除错误',
+                            message: '请检查该队伍是否存在'
+                        });
+                    }                })
+
 
             },
+
 
             handleSelectionChange(val) {
                 this.multipleSelection = val;
