@@ -15,8 +15,8 @@ export const getUserList = data => fetch('/user/list', data);
  * ************/
 export const getSchoolCount = data => fetch('/schoolCount', data);
 export const getSchoolList = data => fetch('/school', data);
-export const postSchool = data => fetch('/school', data,'post');
-export const deleteSchool = data => fetch('/delSchool', data,'post');
+export const postSchool = data => fetch('/school', data, 'post');
+export const deleteSchool = data => fetch('/delSchool', data, 'post');
 
 
 /***************
@@ -24,7 +24,7 @@ export const deleteSchool = data => fetch('/delSchool', data,'post');
  * ************/
 export const getTeamCount = data => fetch('/teamCount', data);
 export const getTeamList = data => fetch('/team', data);
-export const postTeam = data => fetch('/team', data,'post');
+export const postTeam = data => fetch('/team', data, 'post');
 export const deleteTeam = data => fetch('/delTeam', data, 'post');
 
 /***************
@@ -32,7 +32,7 @@ export const deleteTeam = data => fetch('/delTeam', data, 'post');
  * ************/
 export const getExpertCount = data => fetch('/expertCount', data);
 export const getExpertList = data => fetch('/expert', data);
-export const postExpert = data => fetch('/expert', data,'post');
+export const postExpert = data => fetch('/expert', data, 'post');
 export const deleteExpert = data => fetch('/delExpert', data, 'post');
 
 /***************
@@ -40,7 +40,7 @@ export const deleteExpert = data => fetch('/delExpert', data, 'post');
  * ************/
 export const getPostCount = data => fetch('/postsCount', data);
 export const getPostList = data => fetch('/posts', data);
-export const postPosts = data => fetch('/posts', data,'post');
+export const postPosts = data => fetch('/posts', data, 'post');
 export const deletePosts = data => fetch('/delPosts', data, 'post');
 
 /***************
@@ -48,49 +48,21 @@ export const deletePosts = data => fetch('/delPosts', data, 'post');
  * ************/
 export const getMessageCount = data => fetch('/messageCount', data);
 export const getMessageList = data => fetch('/message', data);
-export const postMessage = data => fetch('/message', data,'post');
+export const postMessage = data => fetch('/message', data, 'post');
 export const deleteMessage = data => fetch('/delMessage', data, 'post');
 
 /***************
  *   小组分配相关
  * **************/
 
-export const allocateExpert = data => fetch('/allocateExpert', data);
-export const allocateRival = data => fetch('/allocateRival', data);
+export const allocateExpert = data => fetch('/allocateExpert', data, 'post');
+export const allocateRival = data => fetch('/allocateRival', data, 'post');
 
 /***************
  *   其他相关
  * ************/
 
 export const getUserCount = () => fetch('/user/count');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 /**
@@ -138,13 +110,12 @@ export const orderCount = date => fetch('/statis/order/' + date + '/count');
 export const adminDayCount = date => fetch('/statis/admin/' + date + '/count');
 
 
-
 /**
  * 获取定位城市
  */
 
 export const cityGuess = () => fetch('/v1/cities', {
-	type: 'guess'
+    type: 'guess'
 });
 
 /**
@@ -158,9 +129,9 @@ export const addShop = data => fetch('/shopping/addShop', data, 'POST');
  */
 
 export const searchplace = (cityid, value) => fetch('/v1/pois', {
-	type: 'search',
-	city_id: cityid,
-	keyword: value
+    type: 'search',
+    city_id: cityid,
+    keyword: value
 });
 
 /**
@@ -255,7 +226,6 @@ export const updateFood = data => fetch('/shopping/v2/updatefood', data, 'POST')
  */
 
 export const deleteFood = food_id => fetch('/shopping/v2/food/' + food_id, {}, 'DELETE');
-
 
 
 /**
