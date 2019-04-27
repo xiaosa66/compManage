@@ -22,6 +22,8 @@ const countyManage = r => require.ensure([], () => r(require('@/page/countyManag
 const teamManage = r => require.ensure([], () => r(require('@/page/teamManage')), 'teamManage');
 const expertManage = r => require.ensure([], () => r(require('@/page/expertManage')), 'expertManage');
 const schoolManage = r => require.ensure([], () => r(require('@/page/schoolManage')), 'schoolManage');
+const groupManage = r => require.ensure([], () => r(require('@/page/groupManage')), 'groupManage');
+
 
 const routes = [
 	{
@@ -49,6 +51,10 @@ const routes = [
             path: '/countyManage',
             component: countyManage,
             meta: ['队伍管理', '省市管理'],
+        },  {
+            path: '/groupManage',
+            component: groupManage,
+            meta: ['评审管理', '小组管理'],
         },            {
             path: '/teamManage',
             component: teamManage,

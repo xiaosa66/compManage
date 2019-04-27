@@ -1,4 +1,3 @@
-// 教程文件
 
 
 const Koa=require('koa');
@@ -12,12 +11,8 @@ const koaStatic = require('koa-static')
 const staticCache = require('koa-static-cache')
 const app = new Koa();
 
-
-
-
 // 跨域操作
 const cors = require('@koa/cors');
-
 app.use(cors({
   origin: 'http://localhost:8002', // 前端站点的host
   allowedHeaders: 'Origin, x-requested-with, Content-Type, X-Token', //X-Token为自定义的头字段
@@ -65,6 +60,9 @@ app.use(bodyParser({
 app.use(require('./routes/signin.js').routes())
 app.use(require('./routes/signup.js').routes())
 app.use(require('./routes/posts.js').routes())
+app.use(require('./routes/experts.js').routes())
+app.use(require('./routes/school.js').routes())
+app.use(require('./routes/team.js').routes())
 app.use(require('./routes/signout.js').routes())
 app.use(require('./routes/admin.js').routes())
 

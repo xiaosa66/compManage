@@ -52,6 +52,13 @@ export const postMessage = data => fetch('/message', data,'post');
 export const deleteMessage = data => fetch('/delMessage', data, 'post');
 
 /***************
+ *   小组分配相关
+ * **************/
+
+export const allocateExpert = data => fetch('/allocateExpert', data);
+export const allocateRival = data => fetch('/allocateRival', data);
+
+/***************
  *   其他相关
  * ************/
 
