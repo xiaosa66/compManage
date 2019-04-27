@@ -59,8 +59,8 @@ app.use(bodyParser({
 
 app.use(require('./routes/signin.js').routes())
 app.use(require('./routes/signup.js').routes())
-app.use(require('./routes/posts.js').routes())
 app.use(require('./routes/experts.js').routes())
+app.use(require('./routes/allocate.js').routes())
 app.use(require('./routes/school.js').routes())
 app.use(require('./routes/team.js').routes())
 app.use(require('./routes/signout.js').routes())
