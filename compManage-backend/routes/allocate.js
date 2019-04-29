@@ -11,6 +11,16 @@ const fs = require('fs')
 
 // 分配专家
 router.post('/allocateExpert', async (ctx) => {
+    await userModel.selectTeamByRand()
+        .then(async (result) => {
+            console.log('result:',result);
+            ctx.body = {
+                code: 1,
+                message: '注册成功',
+                result
+            };
+        })
+
     let delArr = ctx.request.body;
     console.log('ctx.request.body:', delArr);
 

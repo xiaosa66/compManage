@@ -310,6 +310,13 @@ let deleteAllPostComment = function (id) {
   return query(_sql)
 }
 
+/********************************      分配相关    ****************************************/
+
+let selectTeamByRand = function (){
+  let _sql = `SELECT * from team order by rand()`
+  return query(_sql);
+};
+
 module.exports = {
   query,
   createTable,
@@ -344,10 +351,9 @@ module.exports = {
   insertComment,
   findAllAdmin,
   findAllAdminCount,
-  findAllAdmin,
-  findAllAdminCount,
   findCommentById,
   deletePost,
   deleteComment,
-  deleteAllPostComment
+  deleteAllPostComment,
+  selectTeamByRand
 }
