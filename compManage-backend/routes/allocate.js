@@ -10,14 +10,32 @@ const fs = require('fs')
 
 
 // 分配专家
-router.post('/allocateExpert', async (ctx) => {
+router.post('/allocateRival', async (ctx) => {
     await userModel.selectTeamByRand()
         .then(async (result) => {
-            console.log('result:',result);
+            console.log('result:',result.length);
+            let compArr = [];
+            let item = {};
+            item.team1 = {};
+            item.team2 = {};
+            // for(let i=0,len = result.length;i<len;i+=2){
+            //     item.team1 = result[i];
+            //     item.team2 = result[i+1];
+            //     compArr.push(item);
+            // }
+            let i = 0;
+            while (result[i+1]!=null) {
+                item.team1 = result[i];
+                if(result[i+1]!=null){}
+                item.team2 = result[i+1];
+                compArr.push(item);
+                i+=2;
+            }
+
             ctx.body = {
                 code: 1,
                 message: '注册成功',
-                result
+                data:compArr
             };
         })
 
@@ -26,7 +44,7 @@ router.post('/allocateExpert', async (ctx) => {
 
 })
 //分配小组对抗
-router.post('/allocateRival', async (ctx) => {
+router.post('/allocateExpert', async (ctx) => {
     let delArr = ctx.request.body;
     console.log('ctx.request.body:', delArr);
 })
