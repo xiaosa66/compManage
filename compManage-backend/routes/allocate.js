@@ -15,9 +15,6 @@ router.post('/allocateRival', async (ctx) => {
         .then(async (result) => {
             console.log('result:',result.length);
             let compArr = [];
-            let item = {};
-            item.team1 = {};
-            item.team2 = {};
             // for(let i=0,len = result.length;i<len;i+=2){
             //     item.team1 = result[i];
             //     item.team2 = result[i+1];
@@ -25,11 +22,16 @@ router.post('/allocateRival', async (ctx) => {
             // }
             let i = 0;
             while (result[i+1]!=null) {
+                let item = {};
                 item.team1 = result[i];
-                if(result[i+1]!=null){}
                 item.team2 = result[i+1];
                 compArr.push(item);
                 i+=2;
+            }
+            if(result.length%2!==0){
+                let item = {};
+                item.team1 = result[result.length-1];
+                compArr.push(item);
             }
 
             ctx.body = {
