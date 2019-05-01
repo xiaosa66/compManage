@@ -325,12 +325,21 @@ let feeler = function (tableName) {
     return query(_sql);
 };
 let updateAllocate = function (item, index) {
-    let _sql = `update allocated_team set  team1_id=${item.team1.team_id} , team2_id=${item.team2.team_id} where comp_id=${index} ;`
+    let _sql = `update allocated_team set  team1_id=${item.team1.team_id} , team2_id=${item.team2.team_id} where comp_id=${index};`
     return query(_sql);
 };
 // 清空表且不可撤销 谨慎使用!!!
 let truncate = function (tableName) {
     let _sql = `Truncate Table ${tableName};`
+    return query(_sql);
+};
+let selectAllocated_team = function () {
+    let _sql = `SELECT * from allocated_team;`
+    return query(_sql);
+};
+let insertAlloExp = function (comp_id,expert_id) {
+    console.log('comp_id,expert_id',comp_id,expert_id);
+    let _sql = `insert into allocated_expert set comp_id=${comp_id} , expert_id=${expert_id};`
     return query(_sql);
 };
 
@@ -378,5 +387,7 @@ module.exports = {
     selectTeamByRand,
     selectExpByRand,
     insertAllocate,
-    updateAllocate
+    updateAllocate,
+    insertAlloExp,
+    selectAllocated_team
 }
