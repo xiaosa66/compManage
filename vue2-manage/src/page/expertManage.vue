@@ -14,7 +14,7 @@
                     width="100">
                 </el-table-column>
                 <el-table-column
-                    property="expert_ID"
+                    property="expert_id"
                     label="专家ID"
                     width="220">
                 </el-table-column>
@@ -39,7 +39,7 @@
                     width="220">
                 </el-table-column>
                 <el-table-column
-                    property="province_ID"
+                    property="province_id"
                     label="省份信息">
                 </el-table-column>
             </el-table>
@@ -137,7 +137,7 @@
             async deleteExpert() {
                 let delArr = [];
                 this.multipleSelection.forEach(item => {
-                    delArr.push(item.expert_ID);
+                    delArr.push(item.expert_id);
                 })
                 const result = await deleteExpert(delArr);
                 console.log('deleteExpert:', result);

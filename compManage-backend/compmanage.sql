@@ -495,18 +495,18 @@ CREATE TABLE `comment`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `expert`;
 CREATE TABLE `expert`  (
-  `expert_ID` int(20) NOT NULL AUTO_INCREMENT,
+  `expert_id` int(20) NOT NULL AUTO_INCREMENT,
   `expert_name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `expert_class` tinyint(4) NULL DEFAULT NULL,
   `expert_info` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
-  `province_ID` int(20) NULL DEFAULT NULL,
+  `province_id` int(20) NULL DEFAULT NULL,
   `expert_pass` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `moment` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `actived` tinyint(1) UNSIGNED NULL DEFAULT 0,
-  PRIMARY KEY (`expert_ID`) USING BTREE,
-  INDEX `expert_ID`(`expert_ID`) USING BTREE,
-  INDEX `expert_ID_2`(`expert_ID`) USING BTREE,
-  INDEX `province_ID`(`province_ID`) USING BTREE
+  PRIMARY KEY (`expert_id`) USING BTREE,
+  INDEX `expert_id`(`expert_id`) USING BTREE,
+  INDEX `expert_id_2`(`expert_id`) USING BTREE,
+  INDEX `province_id`(`province_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -521,11 +521,11 @@ INSERT INTO `expert` VALUES (2, 'xiaosa1', 1, 'qwer', 1, '9c4df88ed624123d26cb27
 DROP TABLE IF EXISTS `message`;
 CREATE TABLE `message`  (
   `message_title` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `message_ID` int(11) NOT NULL AUTO_INCREMENT,
+  `message_id` int(11) NOT NULL AUTO_INCREMENT,
   `message_content` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `message_auther_ID` int(11) NULL DEFAULT NULL,
+  `message_auther_id` int(11) NULL DEFAULT NULL,
   `moment` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`message_ID`) USING BTREE
+  PRIMARY KEY (`message_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -606,17 +606,17 @@ INSERT INTO `province` VALUES (34, '香港特别行政区');
 -- ----------------------------
 DROP TABLE IF EXISTS `school`;
 CREATE TABLE `school`  (
-  `school_ID` int(255) NOT NULL AUTO_INCREMENT,
+  `school_id` int(255) NOT NULL AUTO_INCREMENT,
   `school_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `city_ID` int(255) NULL DEFAULT NULL,
+  `city_id` int(255) NULL DEFAULT NULL,
   `moment` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`school_ID`) USING BTREE,
-  INDEX `school_ibfk_1`(`city_ID`) USING BTREE,
-  INDEX `school_ID`(`school_ID`) USING BTREE,
-  INDEX `school_ID_2`(`school_ID`) USING BTREE,
-  INDEX `school_ID_3`(`school_ID`) USING BTREE,
-  INDEX `school_ID_4`(`school_ID`) USING BTREE,
-  INDEX `school_ID_5`(`school_ID`) USING BTREE
+  PRIMARY KEY (`school_id`) USING BTREE,
+  INDEX `school_ibfk_1`(`city_id`) USING BTREE,
+  INDEX `school_id`(`school_id`) USING BTREE,
+  INDEX `school_id_2`(`school_id`) USING BTREE,
+  INDEX `school_id_3`(`school_id`) USING BTREE,
+  INDEX `school_id_4`(`school_id`) USING BTREE,
+  INDEX `school_id_5`(`school_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -631,12 +631,12 @@ INSERT INTO `school` VALUES (14, '天津大学', 2, '2019-03-26 17:18:51');
 -- ----------------------------
 DROP TABLE IF EXISTS `student`;
 CREATE TABLE `student`  (
-  `student_ID` int(11) NOT NULL AUTO_INCREMENT,
+  `student_id` int(11) NOT NULL AUTO_INCREMENT,
   `student_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `team_ID` int(11) NULL DEFAULT NULL,
-  PRIMARY KEY (`student_ID`) USING BTREE,
-  INDEX `team_ID`(`team_ID`) USING BTREE,
-  CONSTRAINT `student_ibfk_1` FOREIGN KEY (`team_ID`) REFERENCES `team` (`team_id`) ON DELETE CASCADE ON UPDATE CASCADE
+  `team_id` int(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`student_id`) USING BTREE,
+  INDEX `team_id`(`team_id`) USING BTREE,
+  CONSTRAINT `student_ibfk_1` FOREIGN KEY (`team_id`) REFERENCES `team` (`team_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -644,16 +644,16 @@ CREATE TABLE `student`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `team`;
 CREATE TABLE `team`  (
-  `team_ID` int(11) NOT NULL AUTO_INCREMENT,
+  `team_id` int(11) NOT NULL AUTO_INCREMENT,
   `team_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `expert_ID` int(255) NULL DEFAULT NULL,
-  `school_ID` int(255) NOT NULL,
+  `expert_id` int(255) NULL DEFAULT NULL,
+  `school_id` int(255) NOT NULL,
   `moment` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`team_ID`) USING BTREE,
-  INDEX `school_ID`(`school_ID`) USING BTREE,
-  INDEX `expert_ID`(`expert_ID`) USING BTREE,
-  CONSTRAINT `team_ibfk_1` FOREIGN KEY (`school_ID`) REFERENCES `school` (`school_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `team_ibfk_2` FOREIGN KEY (`expert_ID`) REFERENCES `expert` (`expert_ID`) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY (`team_id`) USING BTREE,
+  INDEX `school_id`(`school_id`) USING BTREE,
+  INDEX `expert_id`(`expert_id`) USING BTREE,
+  CONSTRAINT `team_ibfk_1` FOREIGN KEY (`school_id`) REFERENCES `school` (`school_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `team_ibfk_2` FOREIGN KEY (`expert_id`) REFERENCES `expert` (`expert_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------

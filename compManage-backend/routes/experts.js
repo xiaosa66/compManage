@@ -11,8 +11,8 @@ const fs = require('fs')
 
 // 新建专家
 router.post('/expert', async (ctx) => {
-    let { expert_name,  expert_class, expert_info, province_ID ,identity } = ctx.request.body;
-    if (!expert_name || !expert_class || !expert_info || !province_ID || !identity) {
+    let { expert_name,  expert_class, expert_info, province_id ,identity } = ctx.request.body;
+    if (!expert_name || !expert_class || !expert_info || !province_id || !identity) {
         ctx.body = {
             code: -1,
             message: '请输入正确的参数'
@@ -27,7 +27,7 @@ router.post('/expert', async (ctx) => {
                     message: '用户存在'
                 };
             } else {
-                await userModel.insertExpert([expert_name, expert_class, expert_info, province_ID, identity , moment().format('YYYY-MM-DD HH:mm:ss')])
+                await userModel.insertExpert([expert_name, expert_class, expert_info, province_id, identity , moment().format('YYYY-MM-DD HH:mm:ss')])
                     .then(res => {
                         console.log('注册成功', res)
                         //注册成功

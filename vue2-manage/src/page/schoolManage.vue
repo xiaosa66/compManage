@@ -14,7 +14,7 @@
                     width="100">
                 </el-table-column>
                 <el-table-column
-                    property="school_ID"
+                    property="school_id"
                     label="学校ID"
                     width="220">
                 </el-table-column>
@@ -105,7 +105,7 @@
             async deleteSchool() {
                 let deleteSchoolArr = [];
                 this.multipleSelection.forEach(item => {
-                    deleteSchoolArr.push(item.school_ID);
+                    deleteSchoolArr.push(item.school_id);
                 })
                 console.log('deleteSchool:', deleteSchoolArr);
                 const PostData = await deleteSchool(deleteSchoolArr);

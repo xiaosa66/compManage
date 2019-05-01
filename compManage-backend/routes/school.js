@@ -10,7 +10,7 @@ const fs = require('fs')
 
 // post 创建学校
 router.post('/school', async (ctx, next) => {
-    let { school_name, city_ID } = ctx.request.body
+    let { school_name, city_id } = ctx.request.body
     await userModel.schoolExist(school_name)
         .then(async (result) => {
             if (!result) {
@@ -27,7 +27,7 @@ router.post('/school', async (ctx, next) => {
                     message: '已存在学校'
                 };
             } else {
-                await userModel.createSchool([school_name, city_ID, moment().format('YYYY-MM-DD HH:mm:ss')])
+                await userModel.createSchool([school_name, city_id, moment().format('YYYY-MM-DD HH:mm:ss')])
                     .then(res => {
                         console.log('注册成功', res)
                         ctx.body = {

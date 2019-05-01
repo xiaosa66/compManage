@@ -9,8 +9,8 @@ const fs = require('fs')
 /**************************** 队伍相关 ****************************/
 // post 创建队伍
 router.post('/team', async (ctx, next) => {
-    let { team_name, school_ID, expert_ID } = ctx.request.body;
-    if (!team_name || !school_ID) {
+    let { team_name, school_id, expert_id } = ctx.request.body;
+    if (!team_name || !school_id) {
         ctx.body = {
             code: -1,
             message: '请输入正确参数',
@@ -25,10 +25,10 @@ router.post('/team', async (ctx, next) => {
                     message: '已存在队伍'
                 };
             } else {
-                // if(!expert_ID){
+                // if(!expert_id){
 
                 // }
-                await userModel.createTeam([team_name, school_ID, moment().format('YYYY-MM-DD HH:mm:ss')])
+                await userModel.createTeam([team_name, school_id, moment().format('YYYY-MM-DD HH:mm:ss')])
                     .then(res => {
                         ctx.body = {
                             code: 1,
@@ -76,9 +76,9 @@ router.get('/getProvince', async (ctx, next) => {
 // 根据 province_id 获取 cityList
 router.get('/getCityList', async (ctx, next) => {
     // await checkNotLogin(ctx)
-    let { province_ID } = ctx.query;
-    if (province_ID) {
-        await userModel.returnCityList(province_ID)
+    let { province_id } = ctx.query;
+    if (province_id) {
+        await userModel.returnCityList(province_id)
             .then(async (result) => {
                 ctx.body = {
                     code: 1,

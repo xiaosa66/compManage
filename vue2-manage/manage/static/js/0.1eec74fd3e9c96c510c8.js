@@ -39058,7 +39058,7 @@ __webpack_require__(443);
 var dataZoomLang = lang.toolbox.dataZoom;
 var each = zrUtil.each; // Spectial component id start with \0ec\0, see echarts/model/Global.js~hasInnerId
 
-var DATA_ZOOM_ID_BASE = '\0_ec_\0toolbox-dataZoom_';
+var DATA_ZOOM_id_BASE = '\0_ec_\0toolbox-dataZoom_';
 
 function DataZoom(model, ecModel, api) {
   /**
@@ -39300,7 +39300,7 @@ echarts.registerPreprocessor(function (option) {
         type: 'select',
         $fromToolbox: true,
         // Id for merge mapping.
-        id: DATA_ZOOM_ID_BASE + axisName + axisIndex
+        id: DATA_ZOOM_id_BASE + axisName + axisIndex
       }; // FIXME
       // Only support one axis now.
 

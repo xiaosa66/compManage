@@ -14,7 +14,7 @@
                     width="100">
                 </el-table-column>
                 <el-table-column
-                    property="team_ID"
+                    property="team_id"
                     label="队伍ID"
                     width="220">
                 </el-table-column>
@@ -29,12 +29,12 @@
                     width="220">
                 </el-table-column>
                 <el-table-column
-                    property="expert_ID"
+                    property="expert_id"
                     label="专家姓名"
                     width="220">
                 </el-table-column>
                 <el-table-column
-                    property="school_ID"
+                    property="school_id"
                     label="学校名称">
                 </el-table-column>
             </el-table>
@@ -61,7 +61,7 @@
                     <el-input v-model="form.team_name"></el-input>
                 </el-form-item>
                 <el-form-item label="学校区域">
-                    <el-select v-model="form.school_ID" placeholder="请选择学校名称">
+                    <el-select v-model="form.school_id" placeholder="请选择学校名称">
                         <el-option label="区域一" value="shanghai"></el-option>
                         <el-option label="区域二" value="beijing"></el-option>
                     </el-select>
@@ -91,8 +91,8 @@
                 multipleSelection: [],
                 showAddForm: false,
                 form: {
-                    school_ID: '',
-                    expert_ID: '',
+                    school_id: '',
+                    expert_id: '',
                     team_name:'',
                 }
             }
@@ -111,7 +111,7 @@
             async deleteTeam() {
                 let deleteTeamArr = [];
                 this.multipleSelection.forEach(item => {
-                    deleteTeamArr.push(item.school_ID);
+                    deleteTeamArr.push(item.school_id);
                 })
                 console.log('deleteTeam:', deleteTeamArr);
                 const PostData = await deleteTeam(deleteTeamArr);
