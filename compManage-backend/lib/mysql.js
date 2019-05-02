@@ -320,6 +320,10 @@ let insertAllocate = function (item, index) {
     let _sql = `insert into allocated_team set comp_id=${index} , team1_id=${item.team1.team_id} , team2_id=${item.team2.team_id}  ;`
     return query(_sql);
 };
+let getAllocate = function () {
+    let _sql = `SELECT * from allocated_team`
+    return query(_sql);
+};
 let feeler = function (tableName) {
     let _sql = `select count(*) a from ${tableName};`
     return query(_sql);
@@ -335,6 +339,10 @@ let truncate = function (tableName) {
 };
 let selectAllocated_team = function () {
     let _sql = `SELECT * from allocated_team;`
+    return query(_sql);
+};
+let selectAlloTeamWithSchool = function () {
+    let _sql = `SELECT allocated_team.* , team.school_id from allocated_team,team where ;`
     return query(_sql);
 };
 let insertAlloExp = function (comp_id,expert_id) {
@@ -387,7 +395,9 @@ module.exports = {
     selectTeamByRand,
     selectExpByRand,
     insertAllocate,
+    getAllocate,
     updateAllocate,
     insertAlloExp,
-    selectAllocated_team
+    selectAllocated_team,
+    selectAlloTeamWithSchool
 }
