@@ -48,32 +48,29 @@ router.post('/allocateRival', async (ctx) => {
                 console.error('feeler');
                 return;
             }
-            let postData = compArr.map(function (item,index) {
-                let tempObj = {};
-                tempObj.team1_id = item.team1.team_id;
-                tempObj.team2_id = item.team2.team_id;
-                tempObj.team1_name = item.team1.team_name;
-                tempObj.team2_name = item.team2.team_name;
-                tempObj.team1_expert_id = item.team1.expert_id;
-                tempObj.team2_expert_id = item.team2.expert_id;
-                tempObj.team1_moment = item.team1.moment;
-                tempObj.team2_moment = item.team2.moment;
-                tempObj.team1_school_id = item.team1.school_id;
-                tempObj.team2_school_id = item.team2.school_id;
-                return tempObj;
+            console.log('compArr', compArr);
+            let allocated_team = await userModel.selectAll('allocated_team');
+            console.log('allocated_team', allocated_team);
+            let postData = allocated_team.map(function (item, index) {
+                item.team1_name = compArr[index].team1.team_name;
+                item.team2_name = compArr[index].team2.team_name;
+                return item;
             })
-
             ctx.body = {
                 code: 1,
                 data: postData
             };
         })
-})
+});
+router.get('/allocateRival'), async (ctx) => {
+    await userModel.selectAll()
+        .then(async (result) => {
+        })
+};
 
 router.post('/allocateExpert', async (ctx) => {
     let randomExp = await userModel.selectExpByRand();
-
-    let compArr = await userModel.selectAllocated_team();
+    let compArr = await userModel.selectAll('allocated_team');
     let SQLData = [];
     let expLen = randomExp.length;
     let expCountInComp = 4;
@@ -88,40 +85,35 @@ router.post('/allocateExpert', async (ctx) => {
     }
     // 开始分配
     compArr.forEach(function (comp, index) {
-        if(breaked){
+        if (breaked) {
             console.log('breaked');
             return;
         }
         let cumpusExp = 0;
         let companyExp = 0;
         SQLData[index] = [];
-        for (let i = 0; cumpusExp < 2 && companyExp < 2 && i < expLen; i++) {
+        for (let i = 0; i < expLen; i++) {
             if (!randomExp[i].selected) {          // 未选择
-                if (randomExp[i].identity == 1) {// 企业专家
+                if (randomExp[i].identity == 1 && companyExp < 2) {// 企业专家
                     SQLData[index].push(randomExp[i]);
                     randomExp[i].selected = true;
                     companyExp++;
-                } else {         // 校园专家
-                    if ((randomExp[i].school_id !== compArr[index].team1_school_id) && (randomExp[i].school_id !== compArr[index].team2_school_id)) {
+                } else {         // 校园专家  todo 分配存在问题  当前的compArr 不存在team1——school🆔
+                    if ((randomExp[i].school_id !== compArr[index].team1_school_id) && (randomExp[i].school_id !== compArr[index].team2_school_id) && cumpusExp < 2) {
                         SQLData[index].push(randomExp[i]);
                         randomExp[i].selected = true;
                         cumpusExp++;
-                    }else {
-                        console.log('',randomExp[i].school_id,compArr[index].team1_id,compArr[index].team2_id)
                     }
                 }
             }
         }
-            console.log('SQLData[index].length',SQLData[index].length);
-
         // 检查分配结果长度够不够
         if (SQLData[index].length !== expCountInComp) {
-            console.log('SQLData[index].length',SQLData[index].length);
             breaked = true;
             return;
         }
     })
-    if(SQLData.length!==compArr.length){
+    if (SQLData.length !== compArr.length) {
         ctx.body = {
             code: 0,
             msg: '专家池长度不够,无法满足专家与队伍不为一个学校且专家长度为4'
@@ -129,20 +121,19 @@ router.post('/allocateExpert', async (ctx) => {
         return;
     }
     let a = await userModel.feeler('allocated_expert');
-    if (a[0].a){
+    if (a[0].a) {
         await userModel.truncate('allocated_expert');
     }
     SQLData.forEach(async function (item, index) {
         let comp_id = compArr[index].comp_id;
         item.forEach(async function (i) {
             await userModel.insertAlloExp(comp_id, i.expert_id);
-            console.log('comp_id, i.expert_id',comp_id, i.expert_id);
         })
     })
-    console.log('==================');
+    const postData = await userModel.selectAll('allocated_expert');
     ctx.body = {
         code: 1,
-        SQLData
+        data: postData
     };
 });
 

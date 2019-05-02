@@ -37,12 +37,7 @@
                 </el-table-column>
                 <el-table-column
                     property="team1_expert_id"
-                    label="学校 1 专家"
-                    width="220">
-                </el-table-column>
-                <el-table-column
-                    property="team2_expert_id"
-                    label="学校 2 专家"
+                    label="学校专家"
                     width="220">
                 </el-table-column>
 
@@ -106,24 +101,41 @@
             }
         },
         created() {
-            // this.returnSchoolList();
+            const page = this;
         },
         methods: {
-
             async handleAllocateRival() {
                 let postData = this.form;
                 const res = await allocateRival(postData);
-                console.log('handleAllocateRival',res);
+                console.log('handleAllocateRival', res);
                 this.tableData = res.data;
             },
             async handleAllocateExpert() {
+                const page = this;
                 let postData = this.form;
-                const res = await allocateExpert(postData);
-                console.log('handleAllocateExpert',res);
-                if(res.code===0){
-                    alert(res.msg);
-                }
+                if(postData,length == 0){
+                    alert('请先分配队伍');
 
+                }
+                const res = await allocateExpert(postData);
+                console.log('handleAllocateExpert', res);
+                if (res.code === 0) {
+                    alert(res.msg);
+                } else {
+                    let data = res.data;
+                    console.log('data',data);
+                    let dataLen = data.length;
+                    console.log('this.tableData', this.tableData);
+                    this.tableData.forEach(function (item) {
+                        page.$set(item,'experts',[]);
+                        for (let i = 0; i < dataLen; i++) {
+                            if (item.comp_id == data[i].comp_id) {
+                                item.experts.push(data[i].expert_id)
+                            }
+                        }
+                    })
+                }
+                console.log('this.tableData',this.tableData)
             },
 
             // toggleForm() {
