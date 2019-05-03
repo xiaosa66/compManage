@@ -356,6 +356,5 @@ module.exports = {
     getAllocate,
     updateAllocate,
     insertAlloExp,
-    selectAllocated_team,
     selectAlloTeamWithSchool,
 }

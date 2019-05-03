@@ -8,8 +8,7 @@
                       ref="multipleTable"
                       :data="tableData"
                       highlight-current-row
-                      style="width: 100%" @selection-change="handleSelectionChange">
-
+                      style="width: 100%" @selection-change="handleSelectionChange" @cell-click="cellClick">
                 <el-table-column type="selection" width="55"></el-table-column>
                 <el-table-column
                     type="index"
@@ -36,53 +35,27 @@
                     width="220">
                 </el-table-column>
                 <el-table-column
-                    property="team1_expert_id"
+                    property="experts"
                     label="学校专家"
                     width="220">
                 </el-table-column>
-
             </el-table>
-
             <div style="margin-top: 20px">
                 <el-button @click="handleAllocateRival()">为队伍随机分配小组</el-button>
                 <el-button @click="handleAllocateExpert()">为小组随机分配专家</el-button>
             </div>
-
-            <!--            <div class="Pagination" style="text-align: left;margin-top: 10px;">-->
-            <!--                <el-pagination-->
-            <!--                    @size-change="handleSizeChange"-->
-            <!--                    @current-change="handleCurrentChange"-->
-            <!--                    :current-page="currentPage"-->
-            <!--                    :page-size="20"-->
-            <!--                    layout="total, prev, pager, next"-->
-            <!--                    :total="count">-->
-            <!--                </el-pagination>-->
-            <!--            </div>-->
         </div>
-        <!--        <div class="add_form" v-show="showAddForm">-->
-        <!--            <el-form ref="form" :model="form" label-width="80px">-->
-        <!--                <el-form-item label="学校名称">-->
-        <!--                    <el-input v-model="form.school_name"></el-input>-->
-        <!--                </el-form-item>-->
-        <!--                <el-form-item label="学校区域">-->
-        <!--                    <el-select v-model="form.city_name" placeholder="请选择学校区域">-->
-        <!--                        <el-option label="区域一" value="shanghai"></el-option>-->
-        <!--                        <el-option label="区域二" value="beijing"></el-option>-->
-        <!--                    </el-select>-->
-        <!--                </el-form-item>-->
-        <!--                <el-form-item>-->
-        <!--                    <el-button type="primary" @click="onSubmit">立即创建</el-button>-->
-        <!--                    <el-button @click="toggleForm">取消</el-button>-->
-        <!--                </el-form-item>-->
-        <!--            </el-form>-->
-        <!--        </div>-->
+        <div class="extra_form" v-if="showExtraForm">
+            <el-button type="danger" @click="handleCloseExtraForm()">危险按钮</el-button>
+            <div v-for="item in extraForm">{{item}}</div>
+        </div>
     </div>
 
 </template>
 
 <script>
     import headTop from '../components/headTop'
-    import {allocateRival, allocateExpert} from '@/api/getData'
+    import {allocateRival, allocateExpert, autoGetRival} from '@/api/getData'
 
     export default {
         name: "schoolManage",
@@ -93,29 +66,30 @@
             return {
                 tableData: [],
                 multipleSelection: [],
-                showAddForm: false,
-                form: {
-                    school_name: '1234',
-                    city_name: '1234'
-                }
+                showExtraForm: false,
+                extraForm: {}
             }
         },
         created() {
             const page = this;
+            page.getData();
         },
         methods: {
-            async getData(){
+            async getData() {
+                const page = this;
+                await autoGetRival().then(res => {
+                    page.tableData = res.data;
+                })
             },
             async handleAllocateRival() {
                 let postData = this.form;
                 const res = await allocateRival(postData);
-                console.log('handleAllocateRival', res);
                 this.tableData = res.data;
             },
             async handleAllocateExpert() {
                 const page = this;
-                let postData = this.form;
-                if(postData,length == 0){
+                let postData = this.tableData;
+                if (postData.length == 0) {
                     alert('请先分配队伍');
 
                 }
@@ -125,11 +99,11 @@
                     alert(res.msg);
                 } else {
                     let data = res.data;
-                    console.log('data',data);
+                    console.log('data', data);
                     let dataLen = data.length;
                     console.log('this.tableData', this.tableData);
                     this.tableData.forEach(function (item) {
-                        page.$set(item,'experts',[]);
+                        page.$set(item, 'experts', []);
                         for (let i = 0; i < dataLen; i++) {
                             if (item.comp_id == data[i].comp_id) {
                                 item.experts.push(data[i].expert_id)
@@ -137,21 +111,16 @@
                         }
                     })
                 }
-                console.log('this.tableData',this.tableData)
+                console.log('this.tableData', this.tableData)
             },
-
-            // toggleForm() {
-            //     this.showAddForm = !this.showAddForm;
-            // },
-            // onSubmit(e) {
-            //     console.log('submit!', e);
-            //     console.log('submit!', this.form);
-            // },
-            async deleteSchool() {
-                const PostData = await deleteSchool(deleteSchoolArr);
+            cellClick(row) {
+                console.log('row', row.comp_id);
+                this.extraForm = this.tableData[row.comp_id].experts;
+                this.showExtraForm = true;
             },
-
-
+            handleCloseExtraForm() {
+                this.showExtraForm = false;
+            },
             handleSelectionChange(val) {
                 this.multipleSelection = val;
             },
@@ -169,7 +138,7 @@
 
 <style scoped>
 
-    .add_form {
+    .extra_form {
         position: absolute;
         background: white;
         -moz-box-shadow: 2px 2px 5px #333333;

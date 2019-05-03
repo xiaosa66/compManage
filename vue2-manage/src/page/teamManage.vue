@@ -92,7 +92,7 @@
                 form: {
                     school_id: '',
                     expert_id: '',
-                    team_name:'',
+                    team_name: '',
                 }
             }
         },
@@ -131,7 +131,7 @@
             },
             async pageGetTeamList() {
                 const PostData = await getTeamList();
-                this.tableData =PostData.data;
+                this.tableData = PostData.data;
             }
         },
     }

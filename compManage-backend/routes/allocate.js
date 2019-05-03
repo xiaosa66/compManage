@@ -7,16 +7,20 @@ const fs = require('fs')
 
 
 /**************************** 评审管理 小组分配相关 ****************************/
-// 获取学校数量
+// 获取
 router.get('/autoGetRival', async (ctx) => {
     // await checkNotLogin(ctx)
-    await userModel.returnSchoolCount()
-        .then(async (result) => {
-            ctx.body = {
-                code: 1,
-                data: result
-            };
-        })
+    try {
+        await userModel.selectAll('allocated_team')
+            .then(async (result) => {
+                ctx.body = {
+                    code: 1,
+                    data: result
+                };
+            })
+    } catch (e) {
+        console.error(e);
+    }
 })
 
 router.post('/allocateRival', async (ctx) => {
@@ -73,11 +77,6 @@ router.post('/allocateRival', async (ctx) => {
             };
         })
 });
-router.get('/allocateRival'), async (ctx) => {
-    await userModel.selectAll()
-        .then(async (result) => {
-        })
-};
 
 router.post('/allocateExpert', async (ctx) => {
     let randomExp = await userModel.selectExpByRand();

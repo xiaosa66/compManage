@@ -55,10 +55,14 @@
                 <el-form-item label="学校名称">
                     <el-input v-model="form.school_name"></el-input>
                 </el-form-item>
-                <el-form-item label="学校区域">
-                    <el-select v-model="form.city_name" placeholder="请选择学校区域">
-                        <el-option label="区域一" value="shanghai"></el-option>
-                        <el-option label="区域二" value="beijing"></el-option>
+                <el-form-item label="注册城市">
+                    <el-select v-model="form.province_id" placeholder="请选择学校区域">
+                        <el-option v-for="(item,index) in provinceList" :label="item.name" :value="item.id"
+                                   @click="queryCityList(item.id)"></el-option>
+                    </el-select>
+                    <el-select v-if="cityList.length>0" v-model="form.city_id" placeholder="请选择学校城市">
+                        <el-option v-for="(item,index) in cityList" :label="item.name" :value="item.id"
+                                   @click="confirmCity(item.id)"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item>
@@ -73,7 +77,7 @@
 
 <script>
     import headTop from '../components/headTop'
-    import {getSchoolList, deleteSchool} from '@/api/getData'
+    import {getSchoolList, deleteSchool, getCityList, getProvinceList} from '@/api/getData'
 
     export default {
         name: "schoolManage",
@@ -87,20 +91,35 @@
                 showAddForm: false,
                 form: {
                     school_name: '',
-                    city_name: ''
-                }
+                    province_id:'',
+                    city_id:''
+                },
+                provinceList: [],
+                cityList: []
             }
         },
         created() {
             this.returnSchoolList();
         },
         methods: {
-            toggleForm() {
+            async toggleForm() {
+                if (this.provinceList.length == 0) {
+                    await getProvinceList().then(res => {
+                        this.provinceList = res.data;
+                    })
+                }
                 this.showAddForm = !this.showAddForm;
             },
+            async queryCityList(province_id) {
+                console.log('queryCityList');
+                await getCityList(province_id).then(res => {
+                    this.cityList = res.data;
+                })
+            },
+            confirmCity(){},
             onSubmit(e) {
-                console.log('submit!',e);
-                console.log('submit!',this.form);
+                console.log('submit!', e);
+                console.log('submit!', this.form);
             },
             async deleteSchool() {
                 let deleteSchoolArr = [];

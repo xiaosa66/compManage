@@ -18,6 +18,11 @@ export const getSchoolList = data => fetch('/school', data);
 export const postSchool = data => fetch('/school', data, 'post');
 export const deleteSchool = data => fetch('/delSchool', data, 'post');
 
+/***************
+ *   请求省份,城市列表
+ * ************/
+export const getProvinceList = data => fetch('/provinceList', data);
+export const getCityList = data => fetch('/cityList', data);
 
 /***************
  *   队伍相关

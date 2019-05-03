@@ -52,6 +52,28 @@ router.get('/schoolCount', async (ctx, next) => {
         })
 })
 
+// 获取省份列表
+router.get('/provinceList', async (ctx, next) => {
+    await userModel.returnProvinceList()
+        .then(async (result) => {
+            ctx.body = {
+                code: 1,
+                data: result
+            };
+        })
+})
+// 获取城市列表
+router.get('/cityList', async (ctx, next) => {
+    let {procince_id} = ctx.request.query;
+    await userModel.returnCityList(procince_id)
+        .then(async (result) => {
+            ctx.body = {
+                code: 1,
+                data: result
+            };
+        })
+})
+
 // 获取学校列表
 router.get('/school', async (ctx, next) => {
     await whetherLogin(ctx);
