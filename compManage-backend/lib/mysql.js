@@ -89,83 +89,63 @@ let findDataByName = function (name) {
     let _sql = `select * from admin where name="${name}";`
     return query(_sql)
 }
-
 // 通过文章的名字查找管理员
 let findDataByAdmin = function (name) {
     let _sql = `select * from posts where name="${name}";`
     return query(_sql)
 }
-
 // 注册管理员
 let insertData = function (value) {
     let _sql = "insert into admin set name=?,pass=?,avator=?,moment=?;"
     return query(_sql, value)
 }
-
 // 删除管理员
 let deleteAdminData = function (name) {
     let _sql = `delete from admin where name="${name}";`
     return query(_sql)
 }
-
 // 查找管理员
 let findAdminData = function (name) {
     let _sql = `select * from admin where name="${name}";`
     return query(_sql)
 }
-
 // 查询所有管理员
 let findAllAdmin = function () {
     let _sql = `select * from admin;`
     return query(_sql)
 }
-
 // 查询所有管理员数量
 let findAllAdminCount = function () {
     let _sql = `select count(*) as count from admin;`
     return query(_sql)
 }
-
-
 /********************************      专家相关    ****************************************/
-
-
-
 // 新建专家
 let insertExpert = function (value) {
     let _sql = "insert into expert set expert_name=? , expert_class=? , expert_info=? , province_id = ?, identity =?, moment=?;"
     return query(_sql, value)
 }
-
 // 通过名字查找专家
 let findExpertByName = function (name) {
     let _sql = `select * from expert where name="${name}";`
     return query(_sql)
 }
-
 // 通过名字查找专家数量
 let findExpertCountByName = (name) => {
     let _sql = `select count(*) as count from expert where expert_name="${name}";`
     return query(_sql)
 }
-
 // 返回专家列表
 let returnExpertList = () => {
     let _sql = `SELECT * FROM expert;`
     return query(_sql)
 }
-
 // 删除专家
 let deleteExpert = function (ID) {
     let _sql = `delete from expert where expert_id="${ID}";`
     return query(_sql)
 }
-
-
 /********************************      学校相关    ****************************************/
-
-
-
 // 创建学校
 let createSchool = function (value) {
     let _sql = "insert into school set school_name=?, city_id=?, moment=?;"
@@ -176,16 +156,12 @@ let createTeam = function (value) {
     let _sql = "insert into team set team_name=?, school_id=?, moment=?;"
     return query(_sql, value)
 }
-
-
 // 返回学校列表
 let returnSchoolList = () => {
     let _sql = `SELECT school.*, city.name as city_name FROM school,city
   WHERE (school.city_id = city.ID);`
     return query(_sql)
 }
-
-
 // 查询所有学校数量
 let returnSchoolCount = function () {
     let _sql = `select count(*) as count from school;`
@@ -201,30 +177,23 @@ let deleteSchool = function (ID) {
     let _sql = `delete from school where school_id IN (${ID});`
     return query(_sql)
 }
-
 /********************************      队伍相关    ****************************************/
-
-
 // 查询所有队伍数量
 let returnTeamCount = function () {
     let _sql = `select count(*) as count from team;`
     return query(_sql)
 }
-
 // 返回队伍列表
 let returnTeamList = () => {
     let _sql = `SELECT * FROM team;`
     return query(_sql)
 }
-
 /********************************     城市相关    ****************************************/
 // 根据城市 ID 返回城市名称
 let queryCityName = (ID) => {
     let _sql = `SELECT name FROM city WHERE id = "${ID}";`
     return query(_sql)
 }
-
-
 // 返回省份
 let returnProvinceList = () => {
     let _sql = `SELECT * FROM province;`
@@ -235,23 +204,17 @@ let returnCityList = (province_id) => {
     let _sql = `SELECT * FROM city WHERE province_id = "${province_id}";`
     return query(_sql)
 }
-
-
 // 判断队伍是否已经注册
 let teamExist = (name) => {
     let _sql = `select count(*) as count from team where team_name="${name}";`
     return query(_sql)
 }
-
-
 //
 let findUserData = (name) => {
     let _sql = `select * from expert where expert_name="${name}";`
     return query(_sql)
 }
-
 /********************************      新闻(posts)相关    ****************************************/
-
 // 发表文章
 let insertPost = function (value) {
     let _sql = "insert into posts set name=?,title=?,content=?,uid=?,moment=?;"
@@ -262,7 +225,6 @@ let insertComment = function (value) {
     let _sql = "insert into comment set name=?,content=?,moment=?,postid=?,avator=?;"
     return query(_sql, value)
 }
-
 // 通过文章id查找
 let findDataById = function (id) {
     let _sql = `select * from posts where id="${id}";`
@@ -273,7 +235,6 @@ let findCommentById = function (id) {
     let _sql = `select * FROM comment where postid="${id}";`
     return query(_sql)
 }
-
 // 查询所有文章
 let findAllPost = function () {
     let _sql = ` select * FROM posts;`
@@ -304,9 +265,7 @@ let deleteAllPostComment = function (id) {
     let _sql = `delete from comment where postid=${id}`
     return query(_sql)
 }
-
 /********************************      分配相关    ****************************************/
-
 let selectTeamByRand = function () {
     let _sql = `SELECT * from team order by rand()`
     return query(_sql);
@@ -315,7 +274,6 @@ let selectExpByRand = function () {
     let _sql = `SELECT * from expert order by rand()`
     return query(_sql);
 };
-
 let insertAllocate = function (item, index) {
     let _sql = `insert into allocated_team set comp_id=${index} , team1_id=${item.team1.team_id} , team2_id=${item.team2.team_id}  ;`
     return query(_sql);
@@ -337,17 +295,16 @@ let truncate = function (tableName) {
     let _sql = `Truncate Table ${tableName};`
     return query(_sql);
 };
-let selectAllocated_team = function () {
-    let _sql = `SELECT * from allocated_team;`
-    return query(_sql);
-};
 let selectAlloTeamWithSchool = function () {
     let _sql = `SELECT allocated_team.* , team.school_id from allocated_team,team where ;`
     return query(_sql);
 };
 let insertAlloExp = function (comp_id,expert_id) {
-    console.log('comp_id,expert_id',comp_id,expert_id);
     let _sql = `insert into allocated_expert set comp_id=${comp_id} , expert_id=${expert_id};`
+    return query(_sql);
+};
+let selectAll = function (tableName) {
+    let _sql = `select * from ${tableName}`
     return query(_sql);
 };
 
@@ -356,6 +313,7 @@ module.exports = {
     query,
     truncate,
     feeler,
+    selectAll,
     createTable,
     insertData,
     schoolExist,
@@ -399,5 +357,5 @@ module.exports = {
     updateAllocate,
     insertAlloExp,
     selectAllocated_team,
-    selectAlloTeamWithSchool
+    selectAlloTeamWithSchool,
 }
