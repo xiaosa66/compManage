@@ -110,6 +110,9 @@
         },
         methods: {
 
+            async getData(){
+
+            },
             async handleAllocateRival() {
                 let postData = this.form;
                 const res = await allocateRival(postData);

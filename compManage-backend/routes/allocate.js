@@ -7,6 +7,17 @@ const fs = require('fs')
 
 
 /**************************** 评审管理 小组分配相关 ****************************/
+// 获取学校数量
+router.get('/autoGetRival', async (ctx) => {
+    // await checkNotLogin(ctx)
+    await userModel.returnSchoolCount()
+        .then(async (result) => {
+            ctx.body = {
+                code: 1,
+                data: result
+            };
+        })
+})
 
 router.post('/allocateRival', async (ctx) => {
     await userModel.selectTeamByRand()

@@ -57,6 +57,7 @@ export const deleteMessage = data => fetch('/delMessage', data, 'post');
 
 export const allocateExpert = data => fetch('/allocateExpert', data, 'post');
 export const allocateRival = data => fetch('/allocateRival', data, 'post');
+export const autoGetRival = data => fetch('/autoGetRival', data);
 
 /***************
  *   其他相关
