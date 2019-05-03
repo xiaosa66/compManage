@@ -66,6 +66,7 @@ app.use(require('./routes/team.js').routes())
 app.use(require('./routes/signout.js').routes())
 app.use(require('./routes/admin.js').routes())
 app.use(require('./routes/allocate').routes())
+app.use(require('./routes/common').routes())
 
 
 app.listen(3000)

@@ -60,6 +60,34 @@ router.get('/team', async (ctx, next) => {
             };
         })
 })
+// 删除学校
+router.post('/delTeam', async (ctx, next) => {
+    // await checkNotLogin(ctx)
+    let delArr = ctx.request.body;
+    console.log('ctx.request.body:', ctx.request.body);
+    if (!delArr) {
+        ctx.body = {
+            code: -1,
+            message: '请输入正确参数',
+        };
+        return;
+    }
+    delArr = delArr.toString();
+    await userModel.deleteTeam(delArr)
+        .then(async (result) => {
+            if (result.affectedRows >= 1) {
+                ctx.body = {
+                    code: 1,
+                };
+            } else {
+                ctx.body = {
+                    code: -1,
+                    message: result
+                }
+            }
+
+        })
+})
 
 /**************************** 省份相关 ****************************/
 // 获取省份列表

@@ -10,7 +10,7 @@ const fs = require('fs')
 
 // post 创建学校
 router.post('/school', async (ctx, next) => {
-    let { school_name, city_id } = ctx.request.body
+    let {school_name, city_id} = ctx.request.body
     await userModel.schoolExist(school_name)
         .then(async (result) => {
             if (!result) {
@@ -64,8 +64,9 @@ router.get('/provinceList', async (ctx, next) => {
 })
 // 获取城市列表
 router.get('/cityList', async (ctx, next) => {
-    let {procince_id} = ctx.request.query;
-    await userModel.returnCityList(procince_id)
+    let {province_id} = ctx.request.query;
+    console.log('province_id', province_id);
+    await userModel.returnCityList(province_id)
         .then(async (result) => {
             ctx.body = {
                 code: 1,

@@ -9,6 +9,8 @@ export const adminList = data => fetch('/admin/all', data);
 export const adminCount = () => fetch('/admin/count');
 
 export const getUserList = data => fetch('/user/list', data);
+export const delItem = data => fetch('/delItem', data, 'post');
+
 
 /***************
  *   学校相关

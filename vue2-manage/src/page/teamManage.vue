@@ -29,19 +29,14 @@
                     width="220">
                 </el-table-column>
                 <el-table-column
-                    property="expert_id"
-                    label="专家姓名"
-                    width="220">
-                </el-table-column>
-                <el-table-column
                     property="school_id"
-                    label="学校名称">
+                    label="学校id">
                 </el-table-column>
             </el-table>
 
             <div style="margin-top: 20px">
-                <el-button @click="toggleForm()">添加学校</el-button>
-                <el-button @click="deleteTeam()">删除选中学校</el-button>
+                <el-button @click="toggleForm()">添加队伍</el-button>
+                <el-button @click="deleteTeam()">删除选中队伍</el-button>
             </div>
 
             <div class="Pagination" style="text-align: left;margin-top: 10px;">
@@ -60,10 +55,9 @@
                 <el-form-item label="队伍名称">
                     <el-input v-model="form.team_name"></el-input>
                 </el-form-item>
-                <el-form-item label="学校区域">
-                    <el-select v-model="form.school_id" placeholder="请选择学校名称">
-                        <el-option label="区域一" value="shanghai"></el-option>
-                        <el-option label="区域二" value="beijing"></el-option>
+                <el-form-item label="学校名称">
+                    <el-select v-model="form.school_id" placeholder="请选择队伍所在学校">
+                        <el-option v-for="(item,index) in schoolList" :label="item.school_name" :value="item.school_id"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item>
@@ -78,6 +72,7 @@
 <script>
     import headTop from '../components/headTop'
     import {getTeamList, deleteTeam} from '@/api/getData'
+    import {postTeam,getSchoolList} from "../api/getData";
 
     export default {
         name: "teamManage",
@@ -86,12 +81,14 @@
         },
         data() {
             return {
+                currentPage:0,
+                count:20,
                 tableData: [],
                 multipleSelection: [],
                 showAddForm: false,
+                schoolList:[],
                 form: {
                     school_id: '',
-                    expert_id: '',
                     team_name: '',
                 }
             }
@@ -100,21 +97,59 @@
             this.pageGetTeamList();
         },
         methods: {
-            toggleForm() {
+            async toggleForm() {
+                if (this.schoolList.length == 0) {
+                    await getSchoolList().then(res => {
+                        this.schoolList = res.data;
+                    })
+                }
                 this.showAddForm = !this.showAddForm;
+
             },
-            onSubmit(e) {
-                console.log('submit!', e);
-                console.log('submit!', this.form);
+            async onSubmit() {
+                const page = this;
+                let isFull = true;
+                let form = this.form;
+                for (let i in form) {
+                    if (form[i] == null || form[i] == '') {
+                        isFull = false;
+                    }
+                }
+                if (!isFull) {
+                    page.$alert('请填写所有选项', '提示', {
+                        confirmButtonText: '确定',
+                    });
+                    return;
+                }
+                // todo ajax 增加队伍
+                console.log('add team');
+                await postTeam(this.form).then(res => {
+                    if (res.code = 1) {
+                        this.showAddForm = false;
+                        this.pageGetTeamList();
+                    }
+                })
+
             },
             async deleteTeam() {
                 let deleteTeamArr = [];
                 this.multipleSelection.forEach(item => {
-                    deleteTeamArr.push(item.school_id);
+                    deleteTeamArr.push(item.team_id);
                 })
-                console.log('deleteTeam:', deleteTeamArr);
-                const PostData = await deleteTeam(deleteTeamArr);
-                console.log(PostData);
+                await deleteTeam(deleteTeamArr).then(res=>{
+                    if(res.code == 1){
+                        this.$notify({
+                            title: '删除成功',
+                            type: 'success'
+                        });
+                        this.pageGetTeamList();
+                    }else {
+                        this.$notify.error({
+                            title: '删除错误',
+                            message: '请检查该队伍是否存在'
+                        });
+                    }
+                })
 
             },
 

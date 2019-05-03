@@ -188,6 +188,11 @@ let returnTeamList = () => {
     let _sql = `SELECT * FROM team;`
     return query(_sql)
 }
+// 删除学校
+let deleteTeam = function (ID) {
+    let _sql = `delete from team where team_id IN (${ID});`
+    return query(_sql)
+}
 /********************************     城市相关    ****************************************/
 // 根据城市 ID 返回城市名称
 let queryCityName = (ID) => {
@@ -329,6 +334,7 @@ module.exports = {
     teamExist,
     createTeam,
     deleteSchool,
+    deleteTeam,
     deleteExpert,
     findExpertByName,
     findExpertCountByName,
