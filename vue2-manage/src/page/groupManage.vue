@@ -16,22 +16,22 @@
                 </el-table-column>
                 <el-table-column
                     property="team1_id"
-                    label="学校 1 ID"
+                    label="队伍 1 ID"
                     width="220">
                 </el-table-column>
                 <el-table-column
                     property="team2_id"
-                    label="学校 2 ID"
+                    label="队伍 2 ID"
                     width="220">
                 </el-table-column>
                 <el-table-column
                     property="team1_name"
-                    label="学校 1 名称"
+                    label="队伍 1 名称"
                     width="220">
                 </el-table-column>
                 <el-table-column
                     property="team2_name"
-                    label="学校 2 名称"
+                    label="队伍 2 名称"
                     width="220">
                 </el-table-column>
                 <el-table-column
@@ -46,7 +46,7 @@
             </div>
         </div>
         <div class="extra_form" v-if="showExtraForm">
-            <el-button type="danger" @click="handleCloseExtraForm()">危险按钮</el-button>
+            <el-button type="danger" @click="handleCloseExtraForm()">关闭</el-button>
             <div v-for="item in extraForm">{{item}}</div>
         </div>
     </div>
@@ -82,21 +82,50 @@
                 })
             },
             async handleAllocateRival() {
-                let postData = this.form;
-                const res = await allocateRival(postData);
-                this.tableData = res.data;
+                if(this.tableData.length>0){
+                    this.$confirm('此操作将永久删除该已分组的信息进行重新分组, 是否继续?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                        this.continueAllocateRival();
+                    }).catch(() => {
+                        this.$message({
+                            type: 'info',
+                            message: '已取消删除'
+                        });
+                    });
+                    return;
+                }else {
+                    this.continueAllocateRival();
+                }
+
+            },
+            async continueAllocateRival(){
+                await allocateRival(this.form).then(res=>{
+                    this.tableData = res.data;
+                    this.$message({
+                        type: 'success',
+                        message: '重建成功!'
+                    });
+                })
             },
             async handleAllocateExpert() {
                 const page = this;
                 let postData = this.tableData;
                 if (postData.length == 0) {
-                    alert('请先分配队伍');
-
+                    this.$message({
+                        type: 'info',
+                        message: '请先分配队伍'
+                    });
                 }
                 const res = await allocateExpert(postData);
                 console.log('handleAllocateExpert', res);
                 if (res.code === 0) {
-                    alert(res.msg);
+                    this.$message({
+                        type: 'info',
+                        message: res.msg
+                    });
                 } else {
                     let data = res.data;
                     console.log('data', data);
