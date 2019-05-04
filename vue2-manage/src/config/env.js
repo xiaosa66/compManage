@@ -11,11 +11,13 @@ let routerMode = 'hash';
 let baseImgPath;
 
 if (process.env.NODE_ENV == 'development') {
-	baseUrl = 'http://localhost:3000';
+	// baseUrl = 'http://localhost:3000';
+    baseUrl = '//192.144.186.149:3000';
+
     baseImgPath = '/img/';
 }else{
-	baseUrl = '//elm.cangdu.org';
-    baseImgPath = '//elm.cangdu.org/img/';
+	baseUrl = '//192.144.186.149:3000';
+    baseImgPath = '//192.144.186.149:3000/img/';
 }
 
 export {

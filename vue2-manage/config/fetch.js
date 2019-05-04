@@ -1,4 +1,4 @@
-const baseUrl = 'localhost:3000';
+const baseUrl = '192.144.186.149:3000';
 
 export default async(url = '', data = {}, type = 'GET', method = 'fetch') => {
     type = type.toUpperCase();

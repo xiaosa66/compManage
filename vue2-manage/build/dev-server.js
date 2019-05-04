@@ -51,10 +51,10 @@ compiler.plugin('compilation', function (compilation) {
 // })
 
 var context = config.dev.context
-
+console.log('process.env.NODE_ENV',process.env.NODE_ENV);
 switch(process.env.NODE_ENV){
     case 'local': var proxypath = 'http://localhost:3000'; break;
-    case 'online': var proxypath = 'http://elm.cangdu.org'; break;
+    case 'online': var proxypath = 'http://192.144.186.149'; break;
 }
 var options = {
     target: proxypath,

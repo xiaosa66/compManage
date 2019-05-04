@@ -90,7 +90,9 @@
                 const page = this;
                 let postData = this.tableData;
                 if (postData.length == 0) {
-                    alert('请先分配队伍');
+                    this.$notify.error({
+                        title: '请先分配队伍',
+                    });
 
                 }
                 const res = await allocateExpert(postData);

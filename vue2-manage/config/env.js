@@ -18,7 +18,7 @@ if (process.env.NODE_ENV == 'development') {
     imgBaseUrl = '/img/';
 
 }else if(process.env.NODE_ENV == 'production'){
-    baseUrl = 'http://localhost:3000';
+    baseUrl = '192.144.186.149:3000';
     imgBaseUrl = '/img/';
 }
 
