@@ -122,7 +122,7 @@ let findAllAdminCount = function () {
 /********************************      专家相关    ****************************************/
 // 新建专家
 let insertExpert = function (value) {
-    let _sql = "insert into expert set expert_name=? , expert_class=? , expert_info=? , province_id = ?, identity =?, moment=?;"
+    let _sql = "insert into expert set expert_name=? , expert_info=? , school_id = ?, identity =?, moment=?;"
     return query(_sql, value)
 }
 // 通过名字查找专家

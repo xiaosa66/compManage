@@ -77,7 +77,6 @@
 <script>
     import headTop from '../components/headTop'
     import {getSchoolList, deleteSchool, getCityList, getProvinceList, postSchool} from '@/api/getData'
-    // import {commonDelItem} from '../../common/util'
 
     export default {
         name: "schoolManage",
@@ -171,8 +170,6 @@
                             message: '请检查该队伍是否存在'
                         });
                     }                })
-
-
             },
 
 

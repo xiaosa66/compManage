@@ -19,6 +19,11 @@
                     width="220">
                 </el-table-column>
                 <el-table-column
+                    property="identity"
+                    label="专家身份"
+                    width="220">
+                </el-table-column>
+                <el-table-column
                     property="moment"
                     label="注册日期"
                     width="220">
@@ -39,8 +44,8 @@
                     width="220">
                 </el-table-column>
                 <el-table-column
-                    property="province_id"
-                    label="省份信息">
+                    property="school_id"
+                    label="所属学校">
                 </el-table-column>
             </el-table>
 
@@ -63,26 +68,20 @@
         <div class="add_form" v-show="showAddForm">
             <el-form ref="form" :model="form" label-width="80px">
                 <el-form-item label="专家名称">
-                    <el-input v-model="form.expert_name"></el-input>
+                    <el-input v-model.lazy="form.expert_name"></el-input>
                 </el-form-item>
                 <el-form-item label="专家信息">
-                    <el-input v-model="form.expert_info"></el-input>
+                    <el-input v-model.lazy="form.expert_info"></el-input>
                 </el-form-item>
-                <el-form-item label="专家等级">
-                    <el-select v-model.lazy="form.expert_class" placeholder="请选择专家等级">
-                        <el-option label="省级专家" value="1"></el-option>
-                        <el-option label="市级专家" value="2"></el-option>
-                        <el-option label="校级专家" value="3"></el-option>
-                    </el-select>
-                    <el-select v-model.lazy="form.province_id" placeholder="请选择专家省份">
-                        <el-option label="省级专家" value="1"></el-option>
-                        <el-option label="市级专家" value="2"></el-option>
-                        <el-option label="校级专家" value="3"></el-option>
-                    </el-select>
+                <el-form-item label="专家类别">
                     <el-select v-model.lazy="form.identity" placeholder="请选择专家身份">
-                        <el-option label="高校专家" value="campus"></el-option>
-                        <el-option label="企业专家" value="company"></el-option>
-
+                        <el-option label="校园专家" value="0"></el-option>
+                        <el-option label="企业专家" value="1"></el-option>
+                    </el-select>
+                    <el-button @click="confirmdentity()">确定</el-button>
+                    <el-select v-if="schoolList.length>0" v-model.lazy="form.school_id" placeholder="请选择专家所在学校">
+                        <el-option v-for="item in schoolList" :label="item.school_name"
+                                   :value="item.school_id"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item>
@@ -97,10 +96,10 @@
 
 <script>
     import headTop from '../components/headTop'
-    import {getExpertCount, postExpert, getExpertList, deleteExpert} from '@/api/getData'
+    import {getExpertCount, postExpert, getExpertList, getSchoolList, deleteExpert} from '@/api/getData'
 
     export default {
-         components: {
+        components: {
             headTop
         },
         data() {
@@ -108,40 +107,106 @@
                 tableData: [],
                 multipleSelection: [],
                 showAddForm: false,
-                currentPage:'',
-                offset:'',
+                currentPage: '',
+                offset: '',
                 form: {
-                    expert_name: '',
-                    expert_class: '',
-                    province_id:'',
-                    identity:''
-                }
+                    expert_name: '', expert_info: '',
+                    school_id: '',
+                    identity: ''
+                },
+                count: 0,
+                currentPage: 0,
+                schoolList: []
             }
         },
         created() {
             this.returnExpertList();
         },
         methods: {
-            toggleForm() {
+            async toggleForm() {
+
                 this.showAddForm = !this.showAddForm;
             },
-            onSubmit(e) {
-                console.log('submit!', e);
-                console.log('submit!', this.form);
-                let result = this.postExpert();
-                if (result.code = 1 ){
-                    this.toggleForm();
-                    this.returnExpertList();
+            async onSubmit() {
+                const page = this;
+                let isFull = true;
+                let form = this.form;
+                for (let i in form) {
+                    if (form[i] == null || form[i] == '') {
+                        isFull = false;
+                    }
                 }
+                if (!isFull) {
+                    page.$alert('请填写所有选项', '提示', {
+                        confirmButtonText: '确定',
+                    });
+                    return;
+                }
+                console.log('this.form', this.form);
+                await postExpert(this.form).then(res => {
+                    if (res.code = 1) {
+                        this.toggleForm();
+                        this.returnExpertList();
+                    }
+                })
+
+
+            },
+            async confirmdentity() {
+                console.log('this.form.identity ', this.form.identity == 0);
+                if (this.form.identity == 0 && this.schoolList.length == 0) {
+                    await getSchoolList().then(res => {
+                        this.schoolList = res.data;
+                    })
+                }
+
+
             },
             async deleteExpert() {
                 let delArr = [];
                 this.multipleSelection.forEach(item => {
                     delArr.push(item.expert_id);
                 })
-                const result = await deleteExpert(delArr);
-                console.log('deleteExpert:', result);
+                await deleteExpert(delArr).then(res => {
+                    if (res.code == 1) {
+                        this.$notify({
+                            title: '删除成功',
+                            type: 'success'
+                        });
+                        this.returnExpertList();
+                    } else {
+                        this.$notify.error({
+                            title: '删除错误',
+                            message: '请检查该专家是否存在'
+                        });
+                    }
+                })
             },
+
+
+            async deleteSchool() {
+                let deleteSchoolArr = [];
+                this.multipleSelection.forEach(item => {
+                    deleteSchoolArr.push(item.school_id);
+                })
+                console.log('deleteSchool:', deleteSchoolArr);
+                await deleteSchool(deleteSchoolArr).then(res => {
+                    if (res.code == 1) {
+                        this.$notify({
+                            title: '删除成功',
+                            type: 'success'
+                        });
+                        this.returnSchoolList();
+                    } else {
+                        this.$notify.error({
+                            title: '删除错误',
+                            message: '请检查该队伍是否存在'
+                        });
+                    }
+                })
+            },
+
+
             async postExpert() {
                 return await postExpert(this.form);
                 console.log('postExpert:', result);
@@ -158,8 +223,19 @@
                 this.getUsers()
             },
             async returnExpertList() {
-                const PostData = await getExpertList();
-                this.tableData = PostData.data;
+                await getExpertList().then(res => {
+                    let data = res.data;
+                    data.forEach(function (item) {
+                        if (item.identity == 1) {
+                            item.identity = '企业专家'
+                        } else {
+                            item.identity = '校园专家'
+                        }
+                    })
+                    this.tableData = data;
+                })
+
+                ;
             }
         },
     }
