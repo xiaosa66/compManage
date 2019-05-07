@@ -103,6 +103,20 @@ const routes = [
 		}]
 	}
 ]
+// router.beforeEach((to,from,next) => {
+//   if(to.meta.requireLogin){
+//     if(store.state.adminToken){
+//       next()
+//     }else{
+//       next({
+//         path: '/login',
+//         query:{redirect: to.fullPath}
+//       })
+//     }
+//   }else{
+//     next();
+//   }
+// });
 
 export default new Router({
 	routes,

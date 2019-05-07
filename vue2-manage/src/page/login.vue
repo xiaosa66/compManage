@@ -3,7 +3,7 @@
 	  	<transition name="form-fade" mode="in-out">
 	  		<section class="form_contianer" v-show="showLogin">
 		  		<div class="manage_tip">
-		  			<p>计算机应用大赛专家管理系统</p>
+		  			<p>华北五省及港奥台地区专家管理系统</p>
 		  		</div>
 		    	<el-form :model="loginForm" :rules="rules" ref="loginForm">
 					<el-form-item prop="username">
