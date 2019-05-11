@@ -2,7 +2,7 @@
     <div class="fillcontain">
         <head-top></head-top>
         <div class="table_container" v-show="!showAddForm">
-            <el-table
+            <el-table id="out-table"
                 ref="multipleTable"
                 :data="tableData"
                 highlight-current-row
@@ -40,6 +40,7 @@
             <div style="margin-top: 20px">
                 <el-button @click="toggleForm()">添加队伍</el-button>
                 <el-button @click="deleteTeam()">删除选中队伍</el-button>
+                <el-button @click="exportExcel()">导出到 excel</el-button>
             </div>
 
             <div class="Pagination" style="text-align: left;margin-top: 10px;">
@@ -77,6 +78,8 @@
     import headTop from '../components/headTop'
     import {getTeamList, deleteTeam} from '@/api/getData'
     import {postTeam, getSchoolList} from "../api/getData";
+    import FileSaver from 'file-saver'
+    import XLSX from 'xlsx'
 
     export default {
         name: "teamManage",
@@ -165,7 +168,16 @@
                 })
 
             },
-
+            exportExcel () {
+                /* generate workbook object from table */
+                let wb = XLSX.utils.table_to_book(document.querySelector('#out-table'))
+                /* get binary string as output */
+                let wbout = XLSX.write(wb, { bookType: 'xlsx', bookSST: true, type: 'array' })
+                try {
+                    FileSaver.saveAs(new Blob([wbout], { type: 'application/octet-stream' }), 'teamManage.xlsx')
+                } catch (e) { if (typeof console !== 'undefined') console.log(e, wbout) }
+                return wbout;
+            },
             handleSelectionChange(val) {
                 this.multipleSelection = val;
             },
