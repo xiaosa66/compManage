@@ -92,7 +92,7 @@
                 this.multipleSelection = val;
                 console.log(' this.multipleSelection', this.multipleSelection);
             },
-
+            // 激活专家
             async activeAdmin() {
                 let opArr = [];
                 this.multipleSelection.forEach(item => {
@@ -112,6 +112,7 @@
                     }
                 })
             },
+            // 见擦汗是否为超级管理员
             async checkIsSuper() {
                 try {
                     const res = await getAdminInfo()
@@ -128,6 +129,7 @@
                 } catch (err) {
                 }
             },
+            // 禁用专家
             async disableAdmin() {
                 let opArr = [];
                 this.multipleSelection.forEach(item => {
@@ -147,6 +149,7 @@
                     }
                 })
             },
+            //删除专家
             async deleteAdmin() {
                 let opArr = [];
                 this.multipleSelection.forEach(item => {

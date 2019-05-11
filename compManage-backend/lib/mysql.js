@@ -275,7 +275,6 @@ let selectExpByRand = function () {
 };
 let insertAllocate = function (comp_id, team_id) {
     let _sql = `insert into allocated_team set comp_id=${comp_id} , team_id=${team_id};`
-    console.log('_sql',_sql);
     return query(_sql);
 };
 let getAllocate = function () {

@@ -1,8 +1,6 @@
 const router = require('koa-router')();
 const userModel = require('../lib/mysql.js');
-const md5 = require('md5')
-const moment = require('moment');
-const fs = require('fs')
+
 
 
 /**************************** 评审管理 小组分配相关 ****************************/
@@ -39,16 +37,6 @@ router.post('/allocateRival', async (ctx) => {
                         return;
                     }
                 }
-
-                // compArr.forEach(async function (item, index) {
-                //     try {
-                //         await userModel.insertAllocate(item, index)
-                //     } catch
-                //         (e) {
-                //         console.error('insertAllocate');
-                //         return;
-                //     }
-                // })
             } catch (e) {
                 console.error('feeler');
                 return;
