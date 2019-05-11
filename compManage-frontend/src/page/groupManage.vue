@@ -4,42 +4,43 @@
     <div class="fillcontain">
         <head-top></head-top>
         <div class="table_container">
-            <el-table v-show="tableData&&tableData.length"
-                      ref="multipleTable"
-                      :data="tableData"
-                      highlight-current-row
-                      style="width: 100%" @selection-change="handleSelectionChange" @cell-click="cellClick">
-                <el-table-column type="selection" width="55"></el-table-column>
-                <el-table-column
-                    type="index"
-                    width="100">
-                </el-table-column>
-                <el-table-column
-                    property="team1_id"
-                    label="队伍 1 ID"
-                    width="220">
-                </el-table-column>
-                <el-table-column
-                    property="team2_id"
-                    label="队伍 2 ID"
-                    width="220">
-                </el-table-column>
-                <el-table-column
-                    property="team1_name"
-                    label="队伍 1 名称"
-                    width="220">
-                </el-table-column>
-                <el-table-column
-                    property="team2_name"
-                    label="队伍 2 名称"
-                    width="220">
-                </el-table-column>
-                <el-table-column
-                    property="experts"
-                    label="学校专家"
-                    width="220">
-                </el-table-column>
-            </el-table>
+<div v-for="item in tableData">
+    <div v-for="subItem in item">
+        {{subItem.team_name}}
+    </div>
+    <div>----------</div>
+</div>
+
+            <!--            <div v-show="tableData&&tableData.length">-->
+<!--                        <el-table-->
+<!--                                  ref="multipleTable"-->
+<!--                                  :data="tableData"-->
+<!--                                  highlight-current-row-->
+<!--                                  style="width: 100%" @selection-change="handleSelectionChange" @cell-click="cellClick"-->
+<!--                                  :span-method="objectSpanMethod"-->
+<!--                        >-->
+<!--                            <el-table-column type="selection" width="55"></el-table-column>-->
+<!--                            <el-table-column-->
+<!--                                type="index"-->
+<!--                                width="100">-->
+<!--                            </el-table-column>-->
+<!--                            <el-table-column-->
+<!--                                property="team_id"-->
+<!--                                label="队伍 1 ID"-->
+<!--                                width="220">-->
+<!--                            </el-table-column>-->
+<!--                            <el-table-column-->
+<!--                                property="team_name"-->
+<!--                                label="队伍 名称"-->
+<!--                                width="220">-->
+<!--                            </el-table-column>-->
+<!--                            <el-table-column-->
+<!--                                property="experts"-->
+<!--                                label="学校专家"-->
+<!--                                width="220">-->
+<!--                            </el-table-column>-->
+<!--                        </el-table>-->
+<!--            </div>-->
             <div style="margin-top: 20px">
                 <el-button @click="handleAllocateRival()">为队伍随机分配小组</el-button>
                 <el-button @click="handleAllocateExpert()">为小组随机分配专家</el-button>
@@ -75,6 +76,22 @@
             page.getData();
         },
         methods: {
+            objectSpanMethod({ row, column, rowIndex, columnIndex }) {
+                console.log('objectSpanMethod',row)
+                if (columnIndex === 0) {
+                    if (rowIndex % 2 === 0) {
+                        return {
+                            rowspan: 2,
+                            colspan: 1
+                        };
+                    } else {
+                        return {
+                            rowspan: 0,
+                            colspan: 0
+                        };
+                    }
+                }
+            },
             async getData() {
                 const page = this;
                 await autoGetRival().then(res => {
@@ -159,7 +176,7 @@
             handleCurrentChange(val) {
                 this.currentPage = val;
                 this.offset = (val - 1) * this.limit;
-                this.getUsers()
+                // this.getUsers()
             },
         },
     }

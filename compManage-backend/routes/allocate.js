@@ -25,18 +25,9 @@ router.post('/allocateRival', async (ctx) => {
     await userModel.selectTeamByRand()
         .then(async (result) => {
             let compArr = [];
-            let i = 0;
-            while (result[i + 1] != null) {
-                let item = {};
-                item.team1 = result[i];
-                item.team2 = result[i + 1];
-                compArr.push(item);
-                i += 2;
-            }
-            if (result.length % 2 !== 0) {
-                let item = {};
-                item.team1 = result[result.length - 1];
-                compArr.push(item);
+            const num = 4;
+            for (let i = 0, len = result.length; i < len; i += num) {
+                compArr.push(result.slice(i, i + num));
             }
             try {
                 let msg = await userModel.feeler('allocated_team');
@@ -48,30 +39,38 @@ router.post('/allocateRival', async (ctx) => {
                         return;
                     }
                 }
-                compArr.forEach(async function (item, index) {
-                    try {
-                        await userModel.insertAllocate(item, index)
-                    } catch
-                        (e) {
-                        console.error('insertAllocate');
-                        return;
-                    }
-                })
+
+                // compArr.forEach(async function (item, index) {
+                //     try {
+                //         await userModel.insertAllocate(item, index)
+                //     } catch
+                //         (e) {
+                //         console.error('insertAllocate');
+                //         return;
+                //     }
+                // })
             } catch (e) {
                 console.error('feeler');
                 return;
             }
-            console.log('compArr', compArr);
-            let allocated_team = await userModel.selectAll('allocated_team');
-            console.log('allocated_team', allocated_team);
-            let postData = allocated_team.map(function (item, index) {
-                item.team1_name = compArr[index].team1.team_name;
-                item.team2_name = compArr[index].team2.team_name;
-                return item;
-            })
+            for (let i in compArr) {
+                for (let j in compArr[i]) {
+                    let team = compArr[i][j];
+                    team.comp_id = i;
+                        try {
+                            await userModel.insertAllocate(team.comp_id,team.team_id)
+                        } catch
+                            (e) {
+                            console.error('insertAllocate');
+                            return;
+                        }
+                }
+            }
+
+            // data = data.flat(2);
             ctx.body = {
                 code: 1,
-                data: postData
+                data: compArr
             };
         })
 });

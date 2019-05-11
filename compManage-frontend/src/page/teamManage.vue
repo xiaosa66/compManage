@@ -54,6 +54,7 @@
                 </el-pagination>
             </div>
         </div>
+        <transition name="el-fade-in-linear">
         <div class="add_form" v-show="showAddForm">
             <el-form ref="form" :model="form" label-width="80px">
                 <el-form-item label="队伍名称">
@@ -71,6 +72,7 @@
                 </el-form-item>
             </el-form>
         </div>
+            </transition name="el-fade-in-linear">
     </div>
 </template>
 

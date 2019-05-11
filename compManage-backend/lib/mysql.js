@@ -273,8 +273,9 @@ let selectExpByRand = function () {
     let _sql = `SELECT * from expert order by rand()`
     return query(_sql);
 };
-let insertAllocate = function (item, index) {
-    let _sql = `insert into allocated_team set comp_id=${index} , team1_id=${item.team1.team_id} , team2_id=${item.team2.team_id}  ;`
+let insertAllocate = function (comp_id, team_id) {
+    let _sql = `insert into allocated_team set comp_id=${comp_id} , team_id=${team_id};`
+    console.log('_sql',_sql);
     return query(_sql);
 };
 let getAllocate = function () {
