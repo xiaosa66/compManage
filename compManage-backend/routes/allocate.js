@@ -1,7 +1,6 @@
 const router = require('koa-router')();
 const userModel = require('../lib/mysql.js');
 const md5 = require('md5')
-const {whetherLogin} = require('../middlewares/check.js');
 const moment = require('moment');
 const fs = require('fs')
 
@@ -9,7 +8,6 @@ const fs = require('fs')
 /**************************** 评审管理 小组分配相关 ****************************/
 // 获取
 router.get('/autoGetRival', async (ctx) => {
-    // await checkNotLogin(ctx)
     try {
         await userModel.selectAll('allocated_team')
             .then(async (result) => {

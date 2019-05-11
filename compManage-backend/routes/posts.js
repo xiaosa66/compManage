@@ -6,7 +6,6 @@ const moment = require('moment');
 
 //获取新闻数量
 router.get('/postsCount', async (ctx, next) => {
-    // await checkNotLogin(ctx)
     await userModel.returnTeamCount()
         .then(async (result) => {
             ctx.body = {

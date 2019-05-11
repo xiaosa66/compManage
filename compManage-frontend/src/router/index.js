@@ -8,10 +8,8 @@ const manage = r => require.ensure([], () => r(require('@/page/manage')), 'manag
 const home = r => require.ensure([], () => r(require('@/page/home')), 'home');
 
 const userList = r => require.ensure([], () => r(require('@/page/userList')), 'userList');
-const shopList = r => require.ensure([], () => r(require('@/page/shopList')), 'shopList');
 
 const adminList = r => require.ensure([], () => r(require('@/page/adminList')), 'adminList');
-const visitor = r => require.ensure([], () => r(require('@/page/visitor')), 'visitor');
 const newMember = r => require.ensure([], () => r(require('@/page/newMember')), 'newMember');
 const uploadImg = r => require.ensure([], () => r(require('@/page/uploadImg')), 'uploadImg');
 const vueEdit = r => require.ensure([], () => r(require('@/page/vueEdit')), 'vueEdit');
@@ -44,10 +42,6 @@ const routes = [
 			component: userList,
 			meta: ['数据管理', '用户列表'],
 		},{
-			path: '/shopList',
-			component: shopList,
-			meta: ['数据管理', '商家列表'],
-		},{
 			path: '/memberManage',
 			component: memberManage,
 			meta: ['队伍管理', '成员管理'],
@@ -77,10 +71,6 @@ const routes = [
 			path: '/adminList',
 			component: adminList,
 			meta: ['数据管理', '管理员列表'],
-		},{
-			path: '/visitor',
-			component: visitor,
-			meta: ['图表', '用户分布'],
 		},{
 			path: '/newMember',
 			component: newMember,

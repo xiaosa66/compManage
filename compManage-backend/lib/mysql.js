@@ -84,6 +84,24 @@ exports.findDataCountByName = (name) => {
     let _sql = `select count(*) as count from admin where name="${name}";`
     return query(_sql)
 }
+// 激活/禁用管理员
+let toggleAdminStatus = function (arr,status) {
+    console.log('arr',arr)
+    let _sql = `update admin SET active = ${status} where id IN (${arr});`
+    console.log('toggleAdminStatustoggleAdminStatustoggleAdminStatustoggleAdminStatustoggleAdminStatus',_sql)
+
+    return query(_sql)
+}
+// 删除管理员
+let delAdmin = function (arr) {
+    let _sql = `delete from admin where id IN (${arr});`
+    return query(_sql)
+}
+// 检查是否是超级管理员
+let checkIsSuper = function (id) {
+    let _sql = `select active from admin where id = ${id};`
+    return query(_sql)
+}
 // 通过名字查找管理员
 let findDataByName = function (name) {
     let _sql = `select * from admin where name="${name}";`
@@ -96,7 +114,7 @@ let findDataByAdmin = function (name) {
 }
 // 注册管理员
 let insertData = function (value) {
-    let _sql = "insert into admin set name=?,pass=?,avator=?,moment=?;"
+    let _sql = "insert into admin set name=?,pass=?,avator=?,moment=?,active=?;"
     return query(_sql, value)
 }
 // 删除管理员
@@ -142,7 +160,7 @@ let returnExpertList = () => {
 }
 // 删除专家
 let deleteExpert = function (ID) {
-    let _sql = `delete from expert where expert_id="${ID}";`
+    let _sql = `delete from expert where expert_id IN (${ID});`
     return query(_sql)
 }
 /********************************      学校相关    ****************************************/
@@ -293,12 +311,13 @@ let selectAll = function (tableName) {
 
 module.exports = {
     query,
+    toggleAdminStatus,
+    delAdmin,
     truncate,
     feeler,
     selectAll,
     createTable,
-
-
+    checkIsSuper,
     findAllPost,
     insertPost,
 

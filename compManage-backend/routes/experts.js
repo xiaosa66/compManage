@@ -1,7 +1,6 @@
 const router = require('koa-router')();
 const userModel = require('../lib/mysql.js');
 const md5 = require('md5')
-const {whetherLogin} = require('../middlewares/check.js');
 const moment = require('moment');
 const fs = require('fs')
 
@@ -42,7 +41,6 @@ router.post('/expert', async (ctx) => {
 
 // 获取专家数量
 router.get('/expertCount', async (ctx) => {
-    await whetherLogin(ctx);
     await userModel.returnSchoolCount()
         .then(async (result) => {
             ctx.body = {
@@ -54,7 +52,6 @@ router.get('/expertCount', async (ctx) => {
 
 // 获取专家列表
 router.get('/expert', async (ctx) => {
-    await whetherLogin(ctx);
     await userModel.returnExpertList()
         .then(async (result) => {
             ctx.body = {
@@ -66,7 +63,6 @@ router.get('/expert', async (ctx) => {
 
 // 删除专家
 router.post('/delExpert', async (ctx, next) => {
-    // await checkNotLogin(ctx)
     let delArr = ctx.request.body;
     console.log('ctx.request.body:', ctx.request.body);
     if (!delArr) {

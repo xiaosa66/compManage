@@ -1,7 +1,6 @@
 const router = require('koa-router')();
 const userModel = require('../lib/mysql.js');
 const md5 = require('md5')
-const {whetherLogin} = require('../middlewares/check.js');
 const moment = require('moment');
 const fs = require('fs')
 
@@ -41,7 +40,6 @@ router.post('/school', async (ctx, next) => {
 
 // 获取学校数量
 router.get('/schoolCount', async (ctx, next) => {
-    // await checkNotLogin(ctx)
     await userModel.returnSchoolCount()
         .then(async (result) => {
             ctx.body = {
@@ -77,7 +75,6 @@ router.get('/cityList', async (ctx, next) => {
 
 // 获取学校列表
 router.get('/school', async (ctx, next) => {
-    await whetherLogin(ctx);
     await userModel.returnSchoolList()
         .then(async (result) => {
             ctx.body = {

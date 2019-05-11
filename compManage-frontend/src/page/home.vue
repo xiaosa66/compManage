@@ -14,7 +14,7 @@
     import headTop from '../components/headTop'
     import tendency from '../components/tendency'
     import dtime from 'time-formater'
-    import {userCount,getPostList, orderCount, getUserCount, getOrderCount, adminDayCount, adminCount} from '@/api/getData'
+    import {getPostList} from '@/api/getData'
 
     export default {
         data() {

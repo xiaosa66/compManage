@@ -40,7 +40,6 @@ router.post('/team', async (ctx, next) => {
 })
 // 获取队伍数量
 router.get('/teamCount', async (ctx, next) => {
-    // await checkNotLogin(ctx)
     await userModel.returnTeamCount()
         .then(async (result) => {
             ctx.body = {
@@ -51,7 +50,6 @@ router.get('/teamCount', async (ctx, next) => {
 })
 // 获取队伍成员
 router.get('/teamMember', async (ctx, next) => {
-    // await checkNotLogin(ctx)
     await userModel.selectTeamMember(team_id)
         .then(async (result) => {
             ctx.body = {
@@ -85,7 +83,6 @@ router.post('/teamMember', async (ctx, next) => {
 })
 // 获取队伍列表
 router.get('/team', async (ctx, next) => {
-    // await checkNotLogin(ctx)
     await userModel.returnTeamList()
         .then(async (result) => {
             ctx.body = {
@@ -96,7 +93,6 @@ router.get('/team', async (ctx, next) => {
 })
 // 删除学校
 router.post('/delTeam', async (ctx, next) => {
-    // await checkNotLogin(ctx)
     let delArr = ctx.request.body;
     if (!delArr) {
         ctx.body = {
@@ -123,7 +119,6 @@ router.post('/delTeam', async (ctx, next) => {
 })
 // 删除队伍成员
 router.post('/delTeamMember', async (ctx, next) => {
-    // await checkNotLogin(ctx)
     let delArr = ctx.request.body;
     if (!delArr) {
         ctx.body = {
@@ -152,7 +147,6 @@ router.post('/delTeamMember', async (ctx, next) => {
 /**************************** 省份相关 ****************************/
 // 获取省份列表
 router.get('/getProvince', async (ctx, next) => {
-    // await checkNotLogin(ctx)
     await userModel.returnProvinceList()
         .then(async (result) => {
             ctx.body = {
@@ -163,7 +157,6 @@ router.get('/getProvince', async (ctx, next) => {
 })
 // 根据 province_id 获取 cityList
 router.get('/getCityList', async (ctx, next) => {
-    // await checkNotLogin(ctx)
     let {province_id} = ctx.query;
     if (province_id) {
         await userModel.returnCityList(province_id)

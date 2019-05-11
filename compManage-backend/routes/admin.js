@@ -2,26 +2,16 @@
 const router = require('koa-router')();
 const userModel = require('../lib/mysql.js')
 const md5 = require('md5')
-const { checkNotLogin } = require('../middlewares/check.js');
 
 //获取管理员列表接口
-router.get('/admin/info', async(ctx, next) => {
+router.get('/admin/all', async(ctx, next) => {
+    const {offset, limit} = ctx.request.query;
     await userModel.findAllAdmin()
         .then(result => {
             if (result) {
-
-                body = {status:1,content:{
-                    id:result.id,
-                    name:result.name,
-                    moment:result.moment,
-                    avator:result.avator,
-                }};
-                body = JSON.stringify(body);
-                ctx.set("Content-Type", "application/json")
-                ctx.body = body;
-
+                ctx.body ={status:1,data:result};
             }else{
-                ctx.body = {status:-1,message:'no-data-found'}
+                ctx.body = {status:-1,message:'未找到数据'}
                 console.log('错误!未找到数据')
             }
         }).catch(err => {
@@ -45,6 +35,84 @@ router.get('/admin/count', async(ctx, next) => {
             }
         }).catch(err => {
             console.log(err)
+        })
+})
+// 激活管理员
+router.post('/activeAdmin', async (ctx, next) => {
+    let {opArr} = ctx.request.body;
+    console.log('ctx.request.body',ctx.request.body)
+    if (!opArr) {
+        ctx.body = {
+            code: -1,
+            message: '请输入正确参数',
+        };
+        return;
+    }
+    opArr = opArr.toString();
+    await userModel.toggleAdminStatus(opArr,true)
+        .then(async (result) => {
+            if (result.affectedRows >= 1) {
+                ctx.body = {
+                    code: 1,
+                };
+            } else {
+                ctx.body = {
+                    code: -1,
+                    message: result
+                }
+            }
+        })
+})
+// 禁用管理员
+router.post('/disableAdmin', async (ctx, next) => {
+    let {opArr} = ctx.request.body;
+    if (!opArr) {
+        ctx.body = {
+            code: -1,
+            message: '请输入正确参数',
+        };
+        return;
+    }
+    opArr = opArr.toString();
+    console.log('opArr:', opArr);
+    await userModel.toggleAdminStatus(opArr,false)
+        .then(async (result) => {
+            if (result.affectedRows >= 1) {
+                ctx.body = {
+                    code: 1,
+                };
+            } else {
+                ctx.body = {
+                    code: -1,
+                    message: result
+                }
+            }
+        })
+})
+// 删除管理员
+router.post('/deleteAdmin', async (ctx, next) => {
+    let {opArr} = ctx.request.body;
+    if (!opArr) {
+        ctx.body = {
+            code: -1,
+            message: '请输入正确参数',
+        };
+        return;
+    }
+    opArr = opArr.toString();
+    console.log('opArr:', opArr);
+    await userModel.delAdmin(opArr)
+        .then(async (result) => {
+            if (result.affectedRows >= 1) {
+                ctx.body = {
+                    code: 1,
+                };
+            } else {
+                ctx.body = {
+                    code: -1,
+                    message: result
+                }
+            }
         })
 })
 
