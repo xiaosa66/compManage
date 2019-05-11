@@ -9,7 +9,7 @@ const fs = require('fs')
 /**************************** 队伍相关 ****************************/
 // post 创建队伍
 router.post('/team', async (ctx, next) => {
-    let { team_name, school_id, expert_id } = ctx.request.body;
+    let {team_name, school_id, expert_id} = ctx.request.body;
     if (!team_name || !school_id) {
         ctx.body = {
             code: -1,
@@ -49,6 +49,40 @@ router.get('/teamCount', async (ctx, next) => {
             };
         })
 })
+// 获取队伍成员
+router.get('/teamMember', async (ctx, next) => {
+    // await checkNotLogin(ctx)
+    await userModel.selectTeamMember(team_id)
+        .then(async (result) => {
+            ctx.body = {
+                code: 1,
+                data: result
+            };
+        })
+})
+// post 添加队伍成员
+router.post('/teamMember', async (ctx, next) => {
+    let {
+        team_id,
+        student_school_id,
+        student_name,
+        student_sex
+    } = ctx.request.body;
+    if (!team_id || !student_school_id || !student_name || !student_sex) {
+        ctx.body = {
+            code: -1,
+            message: '请输入正确参数',
+        };
+        return;
+    }
+    await userModel.insertTeamMember([team_id, student_school_id, student_name, student_sex])
+        .then(res => {
+            ctx.body = {
+                code: 1,
+                message: '添加队员成功'
+            };
+        })
+})
 // 获取队伍列表
 router.get('/team', async (ctx, next) => {
     // await checkNotLogin(ctx)
@@ -64,7 +98,6 @@ router.get('/team', async (ctx, next) => {
 router.post('/delTeam', async (ctx, next) => {
     // await checkNotLogin(ctx)
     let delArr = ctx.request.body;
-    console.log('ctx.request.body:', ctx.request.body);
     if (!delArr) {
         ctx.body = {
             code: -1,
@@ -74,6 +107,33 @@ router.post('/delTeam', async (ctx, next) => {
     }
     delArr = delArr.toString();
     await userModel.deleteTeam(delArr)
+        .then(async (result) => {
+            if (result.affectedRows >= 1) {
+                ctx.body = {
+                    code: 1,
+                };
+            } else {
+                ctx.body = {
+                    code: -1,
+                    message: result
+                }
+            }
+
+        })
+})
+// 删除队伍成员
+router.post('/delTeamMember', async (ctx, next) => {
+    // await checkNotLogin(ctx)
+    let delArr = ctx.request.body;
+    if (!delArr) {
+        ctx.body = {
+            code: -1,
+            message: '请输入正确参数',
+        };
+        return;
+    }
+    delArr = delArr.toString();
+    await userModel.deleteTeamMember(delArr)
         .then(async (result) => {
             if (result.affectedRows >= 1) {
                 ctx.body = {
@@ -104,7 +164,7 @@ router.get('/getProvince', async (ctx, next) => {
 // 根据 province_id 获取 cityList
 router.get('/getCityList', async (ctx, next) => {
     // await checkNotLogin(ctx)
-    let { province_id } = ctx.query;
+    let {province_id} = ctx.query;
     if (province_id) {
         await userModel.returnCityList(province_id)
             .then(async (result) => {
@@ -124,14 +184,12 @@ router.get('/getCityList', async (ctx, next) => {
 /**************************** 新闻相关 ****************************/
 // 新建新闻
 router.post('/posts', async (ctx) => {
-    const { content,name,title } = ctx.request.body;
     // 获得客户端的Cookie
     var Cookies = {};
-    ctx.headers.cookie && ctx.headers.cookie.split(';').forEach(function( Cookie ) {
+    ctx.headers.cookie && ctx.headers.cookie.split(';').forEach(function (Cookie) {
         var parts = Cookie.split('=');
-        Cookies[ parts[ 0 ].trim() ] = ( parts[ 1 ] || '' ).trim();
+        Cookies[parts[0].trim()] = (parts[1] || '').trim();
     });
-    console.log('Cookies:',Cookies)
     if (!content) {
         ctx.body = {
             code: -1,
@@ -140,7 +198,7 @@ router.post('/posts', async (ctx) => {
         return;
     }
 
-    await userModel.insertPost([name,title,content,Cookies.USER_SID, moment().format('YYYY-MM-DD HH:mm:ss')])
+    await userModel.insertPost([name, title, content, Cookies.USER_SID, moment().format('YYYY-MM-DD HH:mm:ss')])
         .then(res => {
             ctx.body = {
                 code: 1,

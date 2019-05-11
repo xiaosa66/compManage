@@ -33,6 +33,9 @@ export const getTeamCount = data => fetch('/teamCount', data);
 export const getTeamList = data => fetch('/team', data);
 export const postTeam = data => fetch('/team', data, 'post');
 export const deleteTeam = data => fetch('/delTeam', data, 'post');
+export const getTeamMember = data => fetch('/teamMember', data);
+export const postTeamMember = data => fetch('/teamMember', data,'post');
+export const delTeamMember = data => fetch('/delTeamMember', data,'post');
 
 /***************
  *   专家相关

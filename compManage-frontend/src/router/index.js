@@ -22,6 +22,7 @@ const countyManage = r => require.ensure([], () => r(require('@/page/countyManag
 const teamManage = r => require.ensure([], () => r(require('@/page/teamManage')), 'teamManage');
 const expertManage = r => require.ensure([], () => r(require('@/page/expertManage')), 'expertManage');
 const schoolManage = r => require.ensure([], () => r(require('@/page/schoolManage')), 'schoolManage');
+const memberManage = r => require.ensure([], () => r(require('@/page/memberManage')), 'memberManage');
 const groupManage = r => require.ensure([], () => r(require('@/page/groupManage')), 'groupManage');
 
 
@@ -46,6 +47,10 @@ const routes = [
 			path: '/shopList',
 			component: shopList,
 			meta: ['数据管理', '商家列表'],
+		},{
+			path: '/memberManage',
+			component: memberManage,
+			meta: ['队伍管理', '成员管理'],
 		},
             {
             path: '/countyManage',

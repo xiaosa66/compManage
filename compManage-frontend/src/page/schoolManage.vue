@@ -14,8 +14,8 @@
                     width="100">
                 </el-table-column>
                 <el-table-column
-                    property="team_id"
-                    label="队伍ID"
+                    property="school_id"
+                    label="学校ID"
                     width="220">
                 </el-table-column>
                 <el-table-column
@@ -24,19 +24,19 @@
                     width="220">
                 </el-table-column>
                 <el-table-column
-                    property="team_name"
-                    label="队伍名称"
+                    property="school_name"
+                    label="学校名称"
                     width="220">
                 </el-table-column>
                 <el-table-column
-                    property="school_id"
-                    label="学校id">
+                    property="city_name"
+                    label="注册地址">
                 </el-table-column>
             </el-table>
 
             <div style="margin-top: 20px">
-                <el-button @click="toggleForm()">添加队伍</el-button>
-                <el-button @click="deleteTeam()">删除选中队伍</el-button>
+                <el-button @click="toggleForm()">添加学校</el-button>
+                <el-button @click="deleteSchool()">删除选中学校</el-button>
             </div>
 
             <div class="Pagination" style="text-align: left;margin-top: 10px;">
@@ -52,12 +52,16 @@
         </div>
         <div class="add_form" v-show="showAddForm">
             <el-form ref="form" :model="form" label-width="80px">
-                <el-form-item label="队伍名称">
-                    <el-input v-model="form.team_name"></el-input>
-                </el-form-item>
                 <el-form-item label="学校名称">
-                    <el-select v-model="form.school_id" placeholder="请选择队伍所在学校">
-                        <el-option v-for="(item,index) in schoolList" :label="item.school_name" :value="item.school_id"></el-option>
+                    <el-input v-model="form.school_name"></el-input>
+                </el-form-item>
+                <el-form-item label="注册城市">
+                    <el-select v-model="form.province_id" placeholder="请选择学校区域">
+                        <el-option v-for="(item,index) in provinceList" :label="item.name" :value="item.id"></el-option>
+                    </el-select>
+                    <el-button @click="queryCityList(form.province_id)">确定</el-button>
+                    <el-select v-if="cityList.length>0" v-model="form.city_id" placeholder="请选择学校城市">
+                        <el-option v-for="(item,index) in cityList" :label="item.name" :value="item.id"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item>
@@ -67,44 +71,52 @@
             </el-form>
         </div>
     </div>
+
 </template>
 
 <script>
     import headTop from '../components/headTop'
-    import {getTeamList, deleteTeam} from '@/api/getData'
-    import {postTeam,getSchoolList} from "../api/getData";
+    import {getSchoolList, deleteSchool, getCityList, getProvinceList, postSchool} from '@/api/getData'
 
     export default {
-        name: "teamManage",
+        name: "schoolManage",
         components: {
             headTop
         },
         data() {
             return {
-                currentPage:0,
-                count:20,
                 tableData: [],
                 multipleSelection: [],
                 showAddForm: false,
-                schoolList:[],
                 form: {
-                    school_id: '',
-                    team_name: '',
-                }
+                    school_name: '',
+                    province_id: '',
+                    city_id: ''
+                },
+                provinceList: [],
+                cityList: [],
+                count: 0,
+                currentPage: 0
             }
         },
         created() {
-            this.pageGetTeamList();
+            this.returnSchoolList();
         },
+
         methods: {
             async toggleForm() {
-                if (this.schoolList.length == 0) {
-                    await getSchoolList().then(res => {
-                        this.schoolList = res.data;
+                if (this.provinceList.length == 0) {
+                    await getProvinceList().then(res => {
+                        this.provinceList = res.data;
                     })
                 }
                 this.showAddForm = !this.showAddForm;
-
+            },
+            async queryCityList(province_id) {
+                let postData = {province_id};
+                await getCityList(postData).then(res => {
+                    this.cityList = res.data;
+                })
             },
             async onSubmit() {
                 const page = this;
@@ -121,37 +133,42 @@
                     });
                     return;
                 }
-                // todo ajax 增加队伍
-                console.log('add team');
-                await postTeam(this.form).then(res => {
+                await postSchool(this.form).then(res => {
                     if (res.code = 1) {
                         this.showAddForm = false;
-                        this.pageGetTeamList();
+                        this.$notify({
+                            title: '增加成功',
+                            type: 'success'
+                        });
+                        this.returnSchoolList();
+                    }else{
+                        this.$notify.error({
+                            title: '增加失败 ',
+                        });
                     }
                 })
 
             },
-            async deleteTeam() {
-                let deleteTeamArr = [];
+            async deleteSchool() {
+                let deleteSchoolArr = [];
                 this.multipleSelection.forEach(item => {
-                    deleteTeamArr.push(item.team_id);
+                    deleteSchoolArr.push(item.school_id);
                 })
-                await deleteTeam(deleteTeamArr).then(res=>{
-                    if(res.code == 1){
+                await deleteSchool(deleteSchoolArr).then(res=>{
+                    if (res.code == 1) {
                         this.$notify({
                             title: '删除成功',
                             type: 'success'
                         });
-                        this.pageGetTeamList();
-                    }else {
+                        this.returnSchoolList();
+                    } else {
                         this.$notify.error({
                             title: '删除错误',
                             message: '请检查该队伍是否存在'
                         });
-                    }
-                })
-
+                    }                })
             },
+
 
             handleSelectionChange(val) {
                 this.multipleSelection = val;
@@ -164,8 +181,8 @@
                 this.offset = (val - 1) * this.limit;
                 this.getUsers()
             },
-            async pageGetTeamList() {
-                const PostData = await getTeamList();
+            async returnSchoolList() {
+                const PostData = await getSchoolList();
                 this.tableData = PostData.data;
             }
         },

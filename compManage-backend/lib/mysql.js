@@ -151,11 +151,7 @@ let createSchool = function (value) {
     let _sql = "insert into school set school_name=?, city_id=?, moment=?;"
     return query(_sql, value)
 }
-// 创建队伍
-let createTeam = function (value) {
-    let _sql = "insert into team set team_name=?, school_id=?, moment=?;"
-    return query(_sql, value)
-}
+
 // 返回学校列表
 let returnSchoolList = () => {
     let _sql = `SELECT school.*, city.name as city_name FROM school,city
@@ -183,6 +179,11 @@ let returnTeamCount = function () {
     let _sql = `select count(*) as count from team;`
     return query(_sql)
 }
+// 创建队伍
+let createTeam = function (value) {
+    let _sql = "insert into team set team_name=?, school_id=?, moment=?;"
+    return query(_sql, value)
+}
 // 返回队伍列表
 let returnTeamList = () => {
     let _sql = `SELECT * FROM team;`
@@ -193,6 +194,20 @@ let deleteTeam = function (ID) {
     let _sql = `delete from team where team_id IN (${ID});`
     return query(_sql)
 }
+// 删除队伍成员
+let deleteTeamMember = function (ID) {
+    let _sql = `delete from student where student_id IN (${ID});`
+    return query(_sql)
+}
+
+let selectTeamMember = function (teamId) {
+    let _sql = `select * from student where team_id = ${teamId}`
+    return query(_sql);
+};
+let insertTeamMember = function (value) {
+    let _sql = "insert into student set team_id=?, student_school_id=?, student_name=?, student_sex=?;"
+    return query(_sql,value);
+};
 /********************************     城市相关    ****************************************/
 // 根据城市 ID 返回城市名称
 let queryCityName = (ID) => {
@@ -217,57 +232,6 @@ let teamExist = (name) => {
 //
 let findUserData = (name) => {
     let _sql = `select * from expert where expert_name="${name}";`
-    return query(_sql)
-}
-/********************************      新闻(posts)相关    ****************************************/
-// 发表文章
-let insertPost = function (value) {
-    let _sql = "insert into posts set name=?,title=?,content=?,uid=?,moment=?;"
-    return query(_sql, value)
-}
-// 发表评论
-let insertComment = function (value) {
-    let _sql = "insert into comment set name=?,content=?,moment=?,postid=?,avator=?;"
-    return query(_sql, value)
-}
-// 通过文章id查找
-let findDataById = function (id) {
-    let _sql = `select * from posts where id="${id}";`
-    return query(_sql)
-}
-// 通过评论id查找
-let findCommentById = function (id) {
-    let _sql = `select * FROM comment where postid="${id}";`
-    return query(_sql)
-}
-// 查询所有文章
-let findAllPost = function () {
-    let _sql = ` select * FROM posts;`
-    return query(_sql)
-}
-// 查询所有文章数量
-let findAllPostCount = function () {
-    let _sql = ` select COUNT(*) FROM posts;`
-    return query(_sql)
-}
-// 查询分页文章
-let findPostByPage = function (page) {
-    let _sql = ` select * FROM posts limit ${(page - 1) * 10},10;`
-    return query(_sql)
-}
-// 删除文章
-let deletePost = function (id) {
-    let _sql = `delete from posts where id = ${id}`
-    return query(_sql)
-}
-// 删除评论
-let deleteComment = function (id) {
-    let _sql = `delete from comment where id=${id}`
-    return query(_sql)
-}
-// 删除所有评论
-let deleteAllPostComment = function (id) {
-    let _sql = `delete from comment where postid=${id}`
     return query(_sql)
 }
 /********************************      分配相关    ****************************************/
@@ -314,6 +278,7 @@ let selectAll = function (tableName) {
 };
 
 
+
 module.exports = {
     query,
     truncate,
@@ -341,21 +306,11 @@ module.exports = {
     deleteAdminData,
     findAdminData,
     findDataByName,
-    insertPost,
     findUserData,
-    findAllPost,
     returnTeamCount,
-    findAllPostCount,
-    findPostByPage,
     findDataByAdmin,
-    findDataById,
-    insertComment,
     findAllAdmin,
     findAllAdminCount,
-    findCommentById,
-    deletePost,
-    deleteComment,
-    deleteAllPostComment,
     selectTeamByRand,
     selectExpByRand,
     insertAllocate,
@@ -363,4 +318,6 @@ module.exports = {
     updateAllocate,
     insertAlloExp,
     selectAlloTeamWithSchool,
+    insertTeamMember,selectTeamMember,
+    deleteTeamMember
 }
