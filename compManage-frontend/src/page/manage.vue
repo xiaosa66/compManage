@@ -7,15 +7,10 @@
                     <el-menu-item index="manage"><i class="el-icon-menu"></i>首页</el-menu-item>
                     <el-submenu index="2">
                         <template slot="title"><i class="el-icon-setting"></i>用户管理</template>
-                        <!-- <el-menu-item index="userList">用户管理</el-menu-item>  -->
-                        <!--<el-menu-item index="shopList">商家列表</el-menu-item>-->
-                        <!--<el-menu-item index="foodList">食品列表</el-menu-item>-->
-                        <!--<el-menu-item index="orderList">订单列表</el-menu-item>-->
                         <el-menu-item index="adminList">管理员管理</el-menu-item>
                     </el-submenu>
                     <el-submenu index="3">
                         <template slot="title"><i class="el-icon-setting"></i>队伍管理</template>
-<!--                        <el-menu-item index="countyManage">管理省市信息</el-menu-item>-->
                         <el-menu-item index="schoolManage">管理高校信息</el-menu-item>
                         <el-menu-item index="teamManage">管理队伍信息</el-menu-item>
                     </el-submenu>
@@ -26,12 +21,7 @@
                     </el-submenu>
                     <el-submenu index="5">
                         <template slot="title"><i class="el-icon-setting"></i>评审管理</template>
-                        <!--<el-menu-item index="userList">用户列表</el-menu-item>-->
-                        <!--<el-menu-item index="shopList">商家列表</el-menu-item>-->
-                        <!--<el-menu-item index="foodList">食品列表</el-menu-item>-->
-                        <!--<el-menu-item index="orderList">订单列表</el-menu-item>-->
                         <el-menu-item index="groupManage">小组管理</el-menu-item>
-                        <!--<el-menu-item index="adminList">管理员列表</el-menu-item>-->
                     </el-submenu>
                     <el-submenu index="6">
                         <template slot="title"><i class="el-icon-edit"></i>新闻信息</template>

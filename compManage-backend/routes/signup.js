@@ -23,7 +23,6 @@ router.post('/signup', async (ctx, next) => {
     }
     await userModel.findDataByName(user.name)
         .then(async (result) => {
-
             if (result.length) {
                 try {
                     throw Error('用户已经存在')
@@ -50,7 +49,7 @@ router.post('/signup', async (ctx, next) => {
                     if (err) throw err;
                     console.log('头像上传成功')
                 });
-                await userModel.insertData([user.name, md5(user.pass), getName, moment().format('YYYY-MM-DD HH:mm:ss')])
+                await userModel.insertData([user.name, user.pass, getName, moment().format('YYYY-MM-DD HH:mm:ss')])
                     .then(res => {
                         console.log('注册成功', res)
                         //注册成功

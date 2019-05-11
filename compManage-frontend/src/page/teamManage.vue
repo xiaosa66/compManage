@@ -39,7 +39,7 @@
 
             <div style="margin-top: 20px">
                 <el-button @click="toggleForm()">添加队伍</el-button>
-                <el-button @click="deleteTeam()">删除选中队伍</el-button>
+                <el-button type="danger" @click="deleteTeam()">删除选中队伍</el-button>
                 <el-button @click="exportExcel()">导出到 excel</el-button>
             </div>
 
@@ -169,9 +169,7 @@
 
             },
             exportExcel () {
-                /* generate workbook object from table */
                 let wb = XLSX.utils.table_to_book(document.querySelector('#out-table'))
-                /* get binary string as output */
                 let wbout = XLSX.write(wb, { bookType: 'xlsx', bookSST: true, type: 'array' })
                 try {
                     FileSaver.saveAs(new Blob([wbout], { type: 'application/octet-stream' }), 'teamManage.xlsx')

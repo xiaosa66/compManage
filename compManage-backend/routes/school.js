@@ -39,7 +39,6 @@ router.post('/school', async (ctx, next) => {
         })
 })
 
-
 // 获取学校数量
 router.get('/schoolCount', async (ctx, next) => {
     // await checkNotLogin(ctx)
@@ -62,6 +61,7 @@ router.get('/provinceList', async (ctx, next) => {
             };
         })
 })
+
 // 获取城市列表
 router.get('/cityList', async (ctx, next) => {
     let {province_id} = ctx.request.query;
@@ -86,6 +86,7 @@ router.get('/school', async (ctx, next) => {
             };
         })
 })
+
 // 删除学校
 router.post('/delSchool', async (ctx, next) => {
     // await checkNotLogin(ctx)

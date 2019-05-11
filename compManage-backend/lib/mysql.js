@@ -208,6 +208,18 @@ let insertTeamMember = function (value) {
     let _sql = "insert into student set team_id=?, student_school_id=?, student_name=?, student_sex=?;"
     return query(_sql,value);
 };
+/********************************      新闻(posts)相关    ****************************************/
+// 发表文章
+let insertPost = function (value) {
+    let _sql = "insert into posts set name=?,title=?,content=?,uid=?,moment=?;"
+    return query(_sql, value)
+}
+
+// 查询所有文章
+let findAllPost = function () {
+    let _sql = ` select * FROM posts;`
+    return query(_sql)
+}
 /********************************     城市相关    ****************************************/
 // 根据城市 ID 返回城市名称
 let queryCityName = (ID) => {
@@ -285,6 +297,11 @@ module.exports = {
     feeler,
     selectAll,
     createTable,
+
+
+    findAllPost,
+    insertPost,
+
     insertData,
     schoolExist,
     queryCityName,

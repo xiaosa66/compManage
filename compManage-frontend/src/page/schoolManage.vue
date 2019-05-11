@@ -36,7 +36,7 @@
 
             <div style="margin-top: 20px">
                 <el-button @click="toggleForm()">添加学校</el-button>
-                <el-button @click="deleteSchool()">删除选中学校</el-button>
+                <el-button type="danger"  @click="deleteSchool()">删除选中学校</el-button>
             </div>
 
             <div class="Pagination" style="text-align: left;margin-top: 10px;">

@@ -51,7 +51,7 @@
 
             <div style="margin-top: 20px">
                 <el-button @click="toggleForm()">添加专家</el-button>
-                <el-button @click="deleteExpert()">删除选中专家</el-button>
+                <el-button type="danger"  @click="deleteExpert()">删除选中专家</el-button>
             </div>
 
             <div class="Pagination" style="text-align: left;margin-top: 10px;">

@@ -40,7 +40,7 @@
 
             <div style="margin-top: 20px">
                 <el-button @click="toggleForm()">添加成员</el-button>
-                <el-button @click="deleteMember()">删除选中成员</el-button>
+                <el-button type="warning" @click="deleteMember()">删除选中成员</el-button>
             </div>
 
             <div class="Pagination" style="text-align: left;margin-top: 10px;">
