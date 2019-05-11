@@ -99,7 +99,7 @@ let delAdmin = function (arr) {
 }
 // 检查是否是超级管理员
 let checkIsSuper = function (id) {
-    let _sql = `select active from admin where id = ${id};`
+    let _sql = `select isSuper from admin where id = ${id};`
     return query(_sql)
 }
 // 通过名字查找管理员

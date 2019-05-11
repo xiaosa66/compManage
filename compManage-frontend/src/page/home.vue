@@ -102,7 +102,7 @@
     }
 
     .box-card {
-        width: 480px;
+        width: 90%;
         margin:40px;
     }
 

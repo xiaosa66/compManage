@@ -8,7 +8,7 @@
         <el-dropdown @command="handleCommand" menu-align='start'>
 <!--            todo 头像功能先取消 -->
 <!--            <img :src="baseImgPath + adminInfo.avatar" class="avator">-->
-                <img src="/manage/static/img/default-avatar.png" class="avator">
+                <img src="http://m.imeitou.com/uploads/allimg/171123/3-1G123203S6-50.jpg" class="avator">
 
 
             <el-dropdown-menu slot="dropdown">

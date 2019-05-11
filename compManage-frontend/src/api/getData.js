@@ -10,6 +10,7 @@ export const getUserList = data => fetch('/user/list', data);
 export const activeAdmin = data => fetch('/activeAdmin', data, 'post');
 export const disableAdmin = data => fetch('/disableAdmin', data, 'post');
 export const deleteAdmin = data => fetch('/deleteAdmin', data, 'post');
+export const getAdminInfo = data => fetch('/isSuper', data, 'post');
 
 
 /***************

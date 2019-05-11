@@ -21,6 +21,7 @@ const actions = {
 		try{
 			const res = await getAdminInfo()
 			if (res.status == 1) {
+			    console.log('getAdminData',res.data);
 				commit('saveAdminInfo', res.data);
 			}else{
 				throw new Error(res.type)

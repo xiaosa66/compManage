@@ -3,7 +3,10 @@ async function check(ctx, next) {
             await next();
         } else {
             console.log('未登录,跳转到登录');
-            ctx.redirect('http://localhost:8002/#/');
+            ctx.body = {
+                code: 900,
+                message: '未登录',
+            };
         }
 }
 module.exports = check;

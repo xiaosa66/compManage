@@ -37,6 +37,22 @@ router.get('/admin/count', async(ctx, next) => {
             console.log(err)
         })
 })
+// 查看是否是超级管理员
+router.post('/isSuper', async(ctx, next) => {
+    const id = ctx.session.id;
+    console.log(id);
+    await userModel.checkIsSuper(id)
+        .then(result => {
+            if (result) {
+                ctx.body = {status:1,data:result[0]}
+            }else{
+                ctx.body = {status:-1,message:'no-data-found'}
+                console.log('错误!未找到数据')
+            }
+        }).catch(err => {
+            console.log(err)
+        })
+})
 // 激活管理员
 router.post('/activeAdmin', async (ctx, next) => {
     let {opArr} = ctx.request.body;

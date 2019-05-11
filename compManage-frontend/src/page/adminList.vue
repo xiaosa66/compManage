@@ -1,7 +1,7 @@
 <template>
     <div class="fillcontain">
         <head-top></head-top>
-        <div  class="table_container">
+        <div v-if="isSuper" class="table_container">
             <el-table
                 :data="tableData"
                 style="width: 100%" @selection-change="handleSelectionChange">
@@ -54,16 +54,21 @@
                 </el-pagination>
             </div>
         </div>
+        <div v-else class="table_container">
+            功能未开放
+        </div>
     </div>
 </template>
 
 <script>
     import headTop from '../components/headTop'
-    import {adminList, adminCount, activeAdmin, disableAdmin, deleteAdmin} from '@/api/getData'
+    import {adminList, getAdminInfo, adminCount, activeAdmin, disableAdmin, deleteAdmin} from '@/api/getData'
 
     export default {
         data() {
             return {
+                isSuper: false,
+                today: new Date(),
                 tableData: [],
                 currentRow: null,
                 multipleSelection: [],
@@ -77,13 +82,17 @@
             headTop,
         },
         created() {
-            this.initData();
+            if (this.checkIsSuper()) {
+                this.initData();
+            }
+
         },
         methods: {
             handleSelectionChange(val) {
                 this.multipleSelection = val;
                 console.log(' this.multipleSelection', this.multipleSelection);
             },
+
             async activeAdmin() {
                 let opArr = [];
                 this.multipleSelection.forEach(item => {
@@ -102,6 +111,22 @@
                         });
                     }
                 })
+            },
+            async checkIsSuper() {
+                try {
+                    const res = await getAdminInfo()
+                    if (res.status == 1) {
+                        if (res.data.isSuper) {
+                            this.isSuper = res.data.isSuper;
+                            return true;
+                        }
+                        return;
+
+                    } else {
+                        throw new Error(res.type)
+                    }
+                } catch (err) {
+                }
             },
             async disableAdmin() {
                 let opArr = [];
@@ -191,7 +216,7 @@
     @import '../style/mixin';
 
     .table_container {
-        padding: 20px;
+        margin: 30px;
     }
 </style>
 
