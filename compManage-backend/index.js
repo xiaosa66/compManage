@@ -34,11 +34,11 @@ app.use(session({
 app.use(bodyParser({
   formLimit: '1mb'
 }))
-
-app.use(checkLogin.whetherLogin);
-
 app.use(require('./routes/signin.js').routes())
 app.use(require('./routes/signup.js').routes())
+
+app.use(checkLogin);
+
 app.use(require('./routes/experts.js').routes())
 app.use(require('./routes/allocate.js').routes())
 app.use(require('./routes/school.js').routes())
