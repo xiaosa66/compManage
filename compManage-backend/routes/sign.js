@@ -1,7 +1,7 @@
 const router = require('koa-router')();
 const userModel = require('../lib/mysql.js')
 const md5 = require('md5')
-
+const moment = require('moment');
 //  登录接口
 router.post('/admin/login', async (ctx, next) => {
     console.log(ctx.request.body)
@@ -69,7 +69,10 @@ router.post('/admin/signin', async (ctx, next) => {
 router.get('/admin/signout', async(ctx, next) => {
     ctx.session = null;
     console.log('登出成功')
-    ctx.body = true
+    ctx.body = {
+        status: 1,
+        message: '登出成功'
+    };
 })
 
 module.exports = router
