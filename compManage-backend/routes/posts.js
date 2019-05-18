@@ -17,7 +17,6 @@ router.get('/postsCount', async (ctx, next) => {
 
 // 获取新闻列表
 router.get('/posts', async (ctx, next) => {
-    // await checkNotLogin(ctx)
     await userModel.findAllPost()
         .then(async (result) => {
             ctx.body = {

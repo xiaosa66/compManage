@@ -93,7 +93,7 @@ router.post('/allocateExpert', async (ctx) => {
                     SQLData[index].push(randomExp[i]);
                     randomExp[i].selected = true;
                     companyExp++;
-                } else {         // 校园专家  todo 分配存在问题  当前的compArr 不存在team1——school🆔
+                } else {         // 校园专家
                     if ((randomExp[i].school_id !== compArr[index].team1_school_id) && (randomExp[i].school_id !== compArr[index].team2_school_id) && cumpusExp < 2) {
                         SQLData[index].push(randomExp[i]);
                         randomExp[i].selected = true;

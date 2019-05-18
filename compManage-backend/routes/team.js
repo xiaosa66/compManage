@@ -25,9 +25,6 @@ router.post('/team', async (ctx, next) => {
                     message: '已存在队伍'
                 };
             } else {
-                // if(!expert_id){
-
-                // }
                 await userModel.createTeam([team_name, school_id, moment().format('YYYY-MM-DD HH:mm:ss')])
                     .then(res => {
                         ctx.body = {

@@ -112,7 +112,7 @@
                     }
                 })
             },
-            // 见擦汗是否为超级管理员
+            // 是否为超级管理员
             async checkIsSuper() {
                 try {
                     const res = await getAdminInfo()
