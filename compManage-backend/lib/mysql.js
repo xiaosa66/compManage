@@ -197,6 +197,11 @@ let returnTeamCount = function () {
     let _sql = `select count(*) as count from team;`
     return query(_sql)
 }
+// 根据队伍 ID 查询队伍信息
+let queryTeam = function (id) {
+    let _sql = `select * from team where team_id = ${id};`
+    return query(_sql)
+}
 // 创建队伍
 let createTeam = function (value) {
     let _sql = "insert into team set team_name=?, school_id=?, moment=?;"
@@ -320,7 +325,7 @@ module.exports = {
     checkIsSuper,
     findAllPost,
     insertPost,
-
+    queryTeam,
     insertData,
     schoolExist,
     queryCityName,

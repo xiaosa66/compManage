@@ -2,16 +2,23 @@ const router = require('koa-router')();
 const userModel = require('../lib/mysql.js');
 
 
-
 /**************************** 评审管理 小组分配相关 ****************************/
 // 获取
 router.get('/autoGetRival', async (ctx) => {
     try {
         await userModel.selectAll('allocated_team')
             .then(async (result) => {
+                let data = [];
+                for (let i in result) {
+                    console.log(result[i].team_id)
+                    await userModel.queryTeam(result[i].team_id).then(async (item)=>{
+                        item[0].comp_id = result[i].comp_id
+                        data.push(item[0])
+                    })
+                }
                 ctx.body = {
                     code: 1,
-                    data: result
+                    data
                 };
             })
     } catch (e) {
@@ -23,7 +30,7 @@ router.post('/allocateRival', async (ctx) => {
     await userModel.selectTeamByRand()
         .then(async (result) => {
             let compArr = [];
-            const num = 4;
+            const num = 10;
             for (let i = 0, len = result.length; i < len; i += num) {
                 compArr.push(result.slice(i, i + num));
             }
@@ -45,13 +52,13 @@ router.post('/allocateRival', async (ctx) => {
                 for (let j in compArr[i]) {
                     let team = compArr[i][j];
                     team.comp_id = i;
-                        try {
-                            await userModel.insertAllocate(team.comp_id,team.team_id)
-                        } catch
-                            (e) {
-                            console.error('insertAllocate');
-                            return;
-                        }
+                    try {
+                        await userModel.insertAllocate(team.comp_id, team.team_id)
+                    } catch
+                        (e) {
+                        console.error('insertAllocate');
+                        return;
+                    }
                 }
             }
 

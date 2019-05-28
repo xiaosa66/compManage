@@ -20,16 +20,18 @@
                         <el-button @click="submitSigninForm('loginForm')" class="submit_btn">注册
                         </el-button>
                     </el-form-item>
+                    <el-form-item>
+                        <el-button @click="handleNavIndex" class="submit_btn">游客模式
+                        </el-button>
+                    </el-form-item>
                 </el-form>
             </section>
         </transition>
     </div>
 </template>
-
 <script>
     import {login, signin, getAdminInfo} from '@/api/getData'
     import {mapActions, mapState} from 'vuex'
-
     export default {
         data() {
             return {
@@ -114,6 +116,9 @@
                     }
                 });
             },
+            handleNavIndex(){
+                this.$router.push('/manage')
+            }
         },
         watch: {
             adminInfo: function (newValue) {
@@ -128,7 +133,6 @@
         }
     }
 </script>
-
 <style lang="less" scoped>
     @import '../style/mixin';
 
@@ -149,8 +153,8 @@
     }
 
     .form_contianer {
-        .wh(320px, 210px);
-        .ctp(320px, 210px);
+        .wh(320px, 300px);
+        .ctp(320px, 300px);
         padding: 25px;
         border-radius: 5px;
         text-align: center;

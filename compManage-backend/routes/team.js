@@ -3,10 +3,10 @@ const userModel = require('../lib/mysql.js');
 const md5 = require('md5')
 const {whetherLogin} = require('../middlewares/check.js');
 const moment = require('moment');
-const fs = require('fs')
-
+const fs = require('fs');
 
 /**************************** 队伍相关 ****************************/
+
 // post 创建队伍
 router.post('/team', async (ctx, next) => {
     let {team_name, school_id, expert_id} = ctx.request.body;
@@ -141,7 +141,7 @@ router.post('/delTeamMember', async (ctx, next) => {
         })
 })
 
-/**************************** 省份相关 ****************************/
+/**************************** 省份相关 ***************************/
 // 获取省份列表
 router.get('/getProvince', async (ctx, next) => {
     await userModel.returnProvinceList()
@@ -170,6 +170,4 @@ router.get('/getCityList', async (ctx, next) => {
         };
     }
 })
-
-
 module.exports = router;
